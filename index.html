@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Disappeared Places Casebook</title>
+<meta name="description" content="An interactive investigation into six places that were demolished, evacuated, erased or mythologised: who lived there, who decided, what the record shows, and what remains.">
+<style>
+:root{
+  --paper:#f5f2ea; --card:#fffdf8; --ink:#1d1b17; --muted:#6a645a; --rule:#d9d2c3; --rule2:#e8e2d5;
+  --accent:#9e2a1f; --accent-soft:#f3e2dd;
+  --doc:#1f5b86; --doc-bg:#e2edf5;
+  --dec:#8a6a12; --dec-bg:#f4ecd4;
+  --lore:#74408a; --lore-bg:#efe4f3;
+  --disp:#b2461b; --disp-bg:#f7e5dc;
+  --chip:#ece7dc; --shadow:0 1px 0 rgba(0,0,0,.04),0 6px 18px -10px rgba(40,30,10,.25);
+  --serif:"Iowan Old Style","Charter","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#16150f; --card:#1f1d17; --ink:#ece6d8; --muted:#a59d8d; --rule:#3a362c; --rule2:#2c2922;
+    --accent:#e0705f; --accent-soft:#3a201b;
+    --doc:#7fb3dc; --doc-bg:#1b2a36; --dec:#d8b555; --dec-bg:#2f2814;
+    --lore:#c497d6; --lore-bg:#2c2032; --disp:#ec8a5d; --disp-bg:#33201a; --chip:#2a271f;
+    --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 22px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#16150f; --card:#1f1d17; --ink:#ece6d8; --muted:#a59d8d; --rule:#3a362c; --rule2:#2c2922;
+  --accent:#e0705f; --accent-soft:#3a201b;
+  --doc:#7fb3dc; --doc-bg:#1b2a36; --dec:#d8b555; --dec-bg:#2f2814;
+  --lore:#c497d6; --lore-bg:#2c2032; --disp:#ec8a5d; --disp-bg:#33201a; --chip:#2a271f;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 22px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--doc);text-decoration-thickness:1px;text-underline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+@media (max-width:600px){.wrap{padding:0 16px} body{font-size:16px}}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* masthead */
+header.mast{border-bottom:1px solid var(--rule);padding:34px 0 26px}
+.mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.theme-btn{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--rule);border-radius:999px;padding:5px 11px;cursor:pointer;color:var(--muted)}
+h1{font-size:clamp(34px,6vw,62px);line-height:1.02;margin:18px 0 12px;font-weight:600;letter-spacing:-.015em}
+h1 em{font-style:italic;color:var(--accent);font-weight:500}
+.dek{font-size:clamp(17px,2.1vw,21px);max-width:760px;color:var(--ink);margin:0 0 20px}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px}
+@media (max-width:820px){.legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.legend{grid-template-columns:1fr}}
+.leg{border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:10px 12px;font-family:var(--sans);font-size:13px;line-height:1.4;color:var(--muted)}
+.leg b{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.v-doc{--vc:var(--doc);--vb:var(--doc-bg)} .v-dec{--vc:var(--dec);--vb:var(--dec-bg)} .v-lore{--vc:var(--lore);--vb:var(--lore-bg)} .v-disp{--vc:var(--disp);--vb:var(--disp-bg)}
+.leg b{color:var(--vc)}
+.leg{border-left:4px solid var(--vc)}
+.badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--vc);background:var(--vb);border-radius:4px;padding:2px 7px;white-space:nowrap;line-height:1.5}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--vc)}
+
+/* case rail */
+.rail-wrap{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:10px 0}
+@media (max-width:600px){.tab .pl,.tab .vbar{display:none}.tab .nm{font-size:14px}.rail .tab{min-width:140px!important}}
+@media (max-width:900px){.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}.rail .tab{min-width:170px;scroll-snap-align:start}}
+.tab{all:unset;cursor:pointer;display:block;border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:8px 10px 9px;position:relative;transition:border-color .15s,transform .15s}
+.tab:hover{border-color:var(--muted)}
+.tab:focus-visible{outline:2px solid var(--doc);outline-offset:2px}
+.tab[aria-selected="true"]{border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--accent)}
+.tab .no{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.tab .nm{display:block;font-weight:600;font-size:15px;line-height:1.2;margin:2px 0 1px}
+.tab .pl{display:block;font-family:var(--sans);font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vbar{display:flex;height:4px;border-radius:2px;overflow:hidden;margin-top:7px;background:var(--rule2)}
+.vbar span{display:block;height:100%}
+
+/* dossier */
+main{padding:30px 0 10px}
+.case-head{display:grid;grid-template-columns:1.35fr 1fr;gap:34px;align-items:start;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+@media (max-width:860px){.case-head{grid-template-columns:1fr;gap:18px}}
+.case-head h2{font-size:clamp(30px,4.6vw,46px);line-height:1.05;margin:8px 0 6px;font-weight:600;letter-spacing:-.01em}
+.case-head .where{font-family:var(--sans);font-size:14px;color:var(--muted);margin-bottom:16px}
+.cat{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--accent);color:var(--accent);border-radius:3px;padding:2px 7px;margin-left:8px;vertical-align:2px}
+.finding{font-size:19px;line-height:1.5;margin:0}
+.finding-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+.stakes{margin-top:14px;padding:12px 14px;border-left:3px solid var(--ink);background:var(--card);font-size:15.5px}
+.stakes b{font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px;color:var(--muted)}
+.facts{border:1px solid var(--rule);border-radius:10px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
+.facts h3{margin:0;padding:10px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule)}
+.fact{display:grid;grid-template-columns:44% 56%;gap:10px;padding:9px 14px;border-bottom:1px solid var(--rule2);font-size:14.5px}
+.fact:last-child{border-bottom:0}
+.fact .k{font-family:var(--sans);font-size:12px;color:var(--muted);line-height:1.35;padding-top:2px}
+.fact .val{font-weight:600;line-height:1.35}
+.fact .val small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;font-family:var(--sans);margin-top:2px}
+sup.ref{font-family:var(--sans);font-size:10px;font-weight:600;line-height:0;margin-left:1px}
+sup.ref a{text-decoration:none;color:var(--muted)}
+sup.ref a:hover{color:var(--doc)}
+
+.dnav{display:flex;gap:4px;flex-wrap:wrap;margin:18px 0 6px}
+.dnav a{font-family:var(--sans);font-size:12.5px;text-decoration:none;color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:4px 11px;background:var(--card)}
+.dnav a:hover{color:var(--ink);border-color:var(--muted)}
+
+section.blk{padding:30px 0 6px;border-bottom:1px solid var(--rule2)}
+section.blk:last-of-type{border-bottom:0}
+.blk-h{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.blk-h h3{margin:0;font-size:24px;font-weight:600;letter-spacing:-.005em}
+.blk-h .kicker{order:-1;width:100%}
+.lede{color:var(--muted);font-family:var(--sans);font-size:14px;margin:-6px 0 16px;max-width:720px}
+
+/* map */
+.mapcard{border:1px solid var(--rule);border-radius:12px;background:var(--card);box-shadow:var(--shadow);overflow:hidden}
+.map-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--rule)}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:6px 12px;font-family:var(--sans);font-size:12.5px;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.slider{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--muted);flex:1;min-width:220px;max-width:420px}
+.slider input{flex:1;accent-color:var(--accent)}
+.mapstage{position:relative;background:#efe9db}
+.mapstage svg{display:block;width:100%;height:auto}
+.mapstage .tag{position:absolute;top:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;background:rgba(29,27,23,.82);color:#f5f2ea;padding:3px 8px;border-radius:3px;pointer-events:none}
+.mapstage .tag.l{left:10px}.mapstage .tag.r{right:10px}
+.map-foot{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--rule)}
+@media (max-width:760px){.map-foot{grid-template-columns:1fr}}
+.pin-info{padding:12px 14px;font-size:14.5px;min-height:84px;border-right:1px solid var(--rule)}
+@media (max-width:760px){.pin-info{border-right:0;border-bottom:1px solid var(--rule)}}
+.pin-info .pn{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase}
+.pin-info .pt{font-weight:600;display:block;margin:2px 0}
+.pin-info .hint{color:var(--muted);font-family:var(--sans);font-size:13px}
+.pin-list{padding:10px 14px;font-family:var(--sans);font-size:12.5px;columns:2;column-gap:18px}
+@media (max-width:480px){.pin-list{columns:1}}
+.pin-list button{all:unset;cursor:pointer;display:block;padding:2px 0;color:var(--muted);break-inside:avoid}
+.pin-list button:hover,.pin-list button.on{color:var(--ink)}
+.pin-list button b{display:inline-block;min-width:20px;font-family:var(--mono);color:var(--accent);font-weight:600}
+.pin-list .lyr{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);opacity:.8;margin-left:4px}
+.map-note{padding:9px 14px;border-top:1px solid var(--rule);font-family:var(--sans);font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+.conf{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--rule);border-radius:3px;padding:1px 6px;color:var(--ink)}
+
+/* map palette (fixed: printed exhibit) */
+.m-land{fill:#efe8d7}.m-field{fill:#e9e2c9}.m-field2{fill:#e2dabd}.m-meadow{fill:#dfe6cf}.m-park{fill:#d6e2c6}.m-lawn{fill:#c8d9b2;stroke:#a9bf92;stroke-width:1}
+.m-water{fill:#c6d8df}.m-stream{fill:none;stroke:#8fb3c2;stroke-width:3;stroke-linecap:round}.m-river{fill:none;stroke:#8fb3c2;stroke-width:7;stroke-linecap:round}
+.m-city{fill:#d6cfbf}.m-cityblock{fill:#c9c1af}.m-house{fill:#5d4c36}.m-house2{fill:#7a6650}.m-new{fill:#6d8a5b}
+.m-grid{stroke:#c9bfa8;stroke-width:1;stroke-dasharray:3 4;fill:none}.m-ave{stroke:#b9ae95;stroke-width:1.2;fill:none}
+.m-road{stroke:#fbf8f0;stroke-width:5;fill:none;stroke-linecap:round}.m-road-edge{stroke:#bdb39c;stroke-width:7;fill:none;stroke-linecap:round}
+.m-drive{stroke:#f7f3e8;stroke-width:4;fill:none}.m-path{stroke:#f1ecdf;stroke-width:1.6;fill:none}
+.m-rail{stroke:#4d4a44;stroke-width:2;fill:none;stroke-dasharray:6 3}
+.m-ghost{fill:rgba(158,42,31,.06);stroke:#9e2a1f;stroke-width:1.6;stroke-dasharray:5 4}
+.m-ghostline{fill:none;stroke:#9e2a1f;stroke-width:1.3;stroke-dasharray:4 4}
+.m-dump{fill:url(#hatch);stroke:#8c7e66;stroke-width:1}
+.m-ind{fill:#bab3a5;stroke:#9a9384;stroke-width:1}.m-ind2{fill:#cfc8b8;stroke:#a7a090;stroke-width:1;stroke-dasharray:3 2}
+.m-campus{fill:#b9c2cc;stroke:#8f9aa6;stroke-width:1}
+.m-vacant{fill:url(#hatch2)}
+.m-bridge{stroke:#55524b;stroke-width:6;fill:none;stroke-linecap:round}.m-bridge2{stroke:#efe8d7;stroke-width:2;fill:none}
+.m-runway{fill:#9d978b}
+.m-county{fill:#ebe3cc;stroke:#9b8f75;stroke-width:1.4}
+.m-dot{fill:#3a2f22}
+.m-found{fill:none;stroke:#7a6a52;stroke-width:1.6;stroke-dasharray:3 2}
+.m-rock{fill:#b8ad98;stroke:#8f846f;stroke-width:1}
+.m-label{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:10.5px;fill:#3b362d}
+.m-label-s{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:9px;fill:#6b6455}
+.m-label-i{font-family:Georgia,serif;font-style:italic;font-size:12px;fill:#4f6f7c}
+.m-title{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.12em;fill:#6b6455}
+.pin{cursor:pointer}
+.pin circle{fill:#9e2a1f;stroke:#fff;stroke-width:1.6}
+.pin text{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;font-weight:700;fill:#fff;text-anchor:middle;pointer-events:none}
+.pin.now circle{fill:#1f5b86}
+.pin.sel circle{stroke:#1d1b17;stroke-width:2.6}
+.pin:focus{outline:none}.pin:focus-visible circle{stroke:#ffd34d;stroke-width:3}
+.divider{stroke:#1d1b17;stroke-width:2}
+.divknob{fill:#1d1b17}
+
+/* timeline */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.fchip{border:1px solid var(--rule);background:var(--card);border-radius:999px;padding:4px 11px;font-family:var(--sans);font-size:12.5px;cursor:pointer;color:var(--muted)}
+.fchip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:96px;top:4px;bottom:4px;width:1px;background:var(--rule)}
+@media (max-width:560px){.tl::before{left:74px}}
+.tl li{display:grid;grid-template-columns:96px 1fr;gap:0;padding:7px 0;position:relative}
+@media (max-width:560px){.tl li{grid-template-columns:74px 1fr}}
+.tl .yr{font-family:var(--mono);font-size:12.5px;font-weight:600;padding-right:16px;text-align:right;padding-top:2px;line-height:1.3}
+.tl .ev{padding-left:18px;position:relative;font-size:15.5px}
+.tl .ev::before{content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--vc);box-shadow:0 0 0 3px var(--paper)}
+.tl .ev .badge{margin-left:6px;vertical-align:1px}
+.tl li.hide{display:none}
+
+/* people / decisions */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.prose p{margin:0 0 12px}
+.chain{list-style:none;margin:0;padding:0;counter-reset:ch}
+.chain li{position:relative;padding:0 0 14px 34px;counter-increment:ch}
+.chain li::before{content:counter(ch);position:absolute;left:0;top:1px;width:22px;height:22px;border-radius:50%;border:1px solid var(--ink);font-family:var(--mono);font-size:11px;display:grid;place-items:center}
+.chain li::after{content:"";position:absolute;left:11px;top:25px;bottom:2px;width:1px;background:var(--rule)}
+.chain li:last-child::after{display:none}
+.chain .who{font-weight:600}
+.chain .when{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:6px}
+.chain .act{display:block;font-size:15px;color:var(--ink)}
+
+/* evidence */
+.egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.ecard{border:1px solid var(--rule);background:var(--card);border-radius:10px;padding:12px 13px 11px;box-shadow:var(--shadow);display:flex;flex-direction:column;position:relative}
+.ecard.hide{display:none}
+.ecard .etype{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ecard .etype svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5}
+.ecard h4{margin:6px 0 4px;font-size:16px;line-height:1.25}
+.ecard .held{font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:8px}
+.ecard .row{font-size:14px;margin:0 0 6px}
+.ecard .row b{font-family:var(--sans);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block}
+.ecard .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px dashed var(--rule)}
+.ecard details summary{cursor:pointer;font-family:var(--sans);font-size:12px;color:var(--doc);list-style:none}
+.ecard details summary::-webkit-details-marker{display:none}
+
+/* claims */
+.ledger{border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--card)}
+.claim{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:13px 14px;border-bottom:1px solid var(--rule2)}
+.claim:last-child{border-bottom:0}
+.claim.hide{display:none}
+@media (max-width:560px){.claim{grid-template-columns:1fr;gap:6px}}
+.claim .c{font-weight:600;font-size:16px;margin:0 0 3px}
+.claim .why{font-size:14.5px;color:var(--ink);margin:0}
+
+/* remains */
+.remains{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.rem{border-top:2px solid var(--ink);padding:9px 2px 4px}
+.rem .rw{font-weight:600;font-size:15.5px;line-height:1.3}
+.rem .rs{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:3px}
+
+/* sources */
+ol.srcs{margin:0;padding-left:22px;font-family:var(--sans);font-size:13px;color:var(--muted);columns:2;column-gap:28px}
+@media (max-width:760px){ol.srcs{columns:1}}
+ol.srcs li{margin:0 0 6px;break-inside:avoid}
+ol.srcs li:target{background:var(--accent-soft);color:var(--ink)}
+ol.srcs .q{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--rule);border-radius:3px;padding:0 4px;margin-left:4px;color:var(--muted)}
+
+/* compare */
+.compare{background:var(--card);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:34px;padding:40px 0 30px}
+.compare h2{font-size:clamp(28px,4vw,40px);margin:6px 0 8px;font-weight:600}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--paper)}
+table.mx{border-collapse:collapse;width:100%;min-width:900px;font-size:13.5px}
+table.mx th,table.mx td{text-align:left;vertical-align:top;padding:9px 11px;border-bottom:1px solid var(--rule2)}
+table.mx th{font-family:var(--sans);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--card);position:sticky;top:0}
+table.mx td:first-child{font-weight:600;white-space:nowrap}
+table.mx tr:hover td{background:color-mix(in srgb,var(--accent-soft) 45%,transparent)}
+.chartcard{border:1px solid var(--rule);border-radius:10px;background:var(--paper);padding:14px 14px 10px;margin-top:22px}
+.chartcard svg{width:100%;height:auto;display:block}
+.ch-label{font-family:var(--sans);font-size:12px;fill:var(--ink)}
+.ch-sub{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.ch-bar{fill:var(--accent)}
+.ch-bar2{fill:none;stroke:var(--ink);stroke-width:1.3;stroke-dasharray:3 2}
+.ch-axis{stroke:var(--rule);stroke-width:1}
+.patterns{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+@media (max-width:820px){.patterns{grid-template-columns:1fr}}
+.pat{border:1px solid var(--rule);border-radius:10px;padding:14px 16px;background:var(--paper)}
+.pat h4{margin:0 0 6px;font-size:18px}
+.pat p{margin:0 0 8px;font-size:15px}
+.pat .kicker{display:block;margin-bottom:4px}
+
+.method{padding:36px 0 50px}
+.method h2{font-size:28px;margin:6px 0 10px}
+.method .cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:820px){.method .cols{grid-template-columns:1fr}}
+.method p,.method li{font-size:15px}
+footer{border-top:1px solid var(--rule);padding:18px 0 40px;font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+.fade-in{animation:fi .35s ease both}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fade-in{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="mast-top">
+      <span class="kicker">Casebook · Six places · Compiled 25 October 2026</span>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle colour theme">Theme</button>
+    </div>
+    <h1>The Case File of a <em>Disappeared</em> Place</h1>
+    <p class="dek">Six places that were taken by eminent domain, bulldozed by a city, annihilated as reprisal, cleared under apartheid, demolished by treaty, or swallowed by a story. Each file reconstructs the place from maps, land and tax records, censuses, photographs and what survives on the ground, then separates what the record proves from what has been told about it.</p>
+    <div class="legend" aria-label="How claims are classified">
+      <div class="leg v-doc"><b>Documented</b>Supported by primary records (deeds, censuses, proclamations, court filings, contemporaneous photographs or film) and corroborated by an institutional or scholarly source.</div>
+      <div class="leg v-dec"><b>Gradual decline</b>A slow structural process, such as withheld services, neglect or earlier partial removals. Often the condition later cited to justify erasure.</div>
+      <div class="leg v-lore"><b>Lore</b>A widely circulated claim that the record contradicts or does not support. Includes period propaganda and later myth.</div>
+      <div class="leg v-disp"><b>Disputed</b>Sources conflict on a figure or date, the record supports more than one reading, or a claim rests only on secondary retellings.</div>
+    </div>
+  </div>
+</header>
+
+<div class="rail-wrap"><div class="wrap"><div class="rail" id="rail" role="tablist" aria-label="Case files"></div></div></div>
+
+<main class="wrap" id="dossier" aria-live="polite"></main>
+
+<section class="compare" id="compare">
+  <div class="wrap" id="compareInner"></div>
+</section>
+
+<section class="method wrap" id="method">
+  <span class="kicker">Method and limits</span>
+  <h2>How this casebook was built</h2>
+  <div class="cols">
+    <div>
+      <p>Every factual statement carries a bracketed number linking to that case’s source list. Sources were consulted online on or before 25 October 2026; no physical archive was visited. Where a figure or event appears only in popular or secondary retellings, the source is flagged <span class="q" style="font-family:var(--mono);font-size:10px;border:1px solid var(--rule);border-radius:3px;padding:0 4px">secondary</span> and the claim is classified Disputed unless corroborated.</p>
+      <p>The “then” and “now” maps are original schematics drawn for this page. They show relative positions of features described in surveys, archival maps, municipal records and site descriptions. They are not traced from any map, they are not to scale, and building counts are illustrative unless a figure is stated. Each map states its basis and a confidence level.</p>
+    </div>
+    <div>
+      <p>No historical photographs are reproduced. Instead, evidence cards describe specific photographs and films, name the institution that holds them and give catalogue references where published, so a reader can locate the originals.</p>
+      <p>Cases were selected because recovering the place changes how a consequential decision reads: who held power over land, how a label preceded a clearance, or how a myth displaced a documented crime. Six cases cannot support statistical claims; the cross-case patterns are offered as observations to test against other places.</p>
+      <p>Corrections: if a source has been superseded or a figure is wrong, the case’s source list shows where each claim came from, so it can be checked and amended.</p>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">Original HTML, CSS, JavaScript and SVG. No external images or visual assets. Compiled 25 October 2026.</div></footer>
+
+<script>
+/* ---------- utilities ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function scatter(seed,n,x,y,w,h,cls,sw,sh){var r=rng(seed),o="";for(var i=0;i<n;i++){var a=x+r()*w,b=y+r()*h,ww=sw*(0.7+r()*0.6),hh=sh*(0.7+r()*0.6),rot=(r()*30-15).toFixed(1);o+='<rect class="'+cls+'" x="'+a.toFixed(1)+'" y="'+b.toFixed(1)+'" width="'+ww.toFixed(1)+'" height="'+hh.toFixed(1)+'" transform="rotate('+rot+' '+a.toFixed(1)+' '+b.toFixed(1)+')"/>';}return o;}
+function dots(seed,n,pts,cls,rad){var r=rng(seed),o="";for(var i=0;i<n;i++){var p=pts(r);o+='<circle class="'+cls+'" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+rad+'"/>';}return o;}
+function mosaic(seed,x0,y0,x1,y1,step){var r=rng(seed),o="",shades=["#5f5b53","#6e695f","#7c766a","#8a8376","#968f81","#a39b8c","#575349"];for(var x=x0;x<x1;x+=step){for(var y=y0;y<y1;y+=step*0.85){if(r()<0.06)continue;var w=step*(0.8+r()*0.5),h=step*0.85*(0.75+r()*0.5);o+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.min(w,x1-x).toFixed(1)+'" height="'+Math.min(h,y1-y).toFixed(1)+'" fill="'+shades[Math.floor(r()*shades.length)]+'"/>';}}return o;}
+function grid(x0,y0,x1,y1,sx,sy,cls){var o="";for(var x=x0;x<x1;x+=sx){for(var y=y0;y<y1;y+=sy){o+='<rect class="'+cls+'" x="'+(x+2)+'" y="'+(y+2)+'" width="'+(sx-4)+'" height="'+(sy-4)+'"/>';}}return o;}
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");};
+
+var V={doc:{l:"Documented",c:"v-doc"},dec:{l:"Gradual decline",c:"v-dec"},lore:{l:"Lore",c:"v-lore"},disp:{l:"Disputed",c:"v-disp"}};
+function badge(v){return '<span class="badge '+V[v].c+'">'+V[v].l+'</span>';}
+
+var ICON={
+ "Map":'<svg viewBox="0 0 16 16"><path d="M1 3l4.5-1.5 5 1.5L15 1.5v11.5L10.5 14.5l-5-1.5L1 14.5z"/><path d="M5.5 1.5v11.5M10.5 3v11.5"/></svg>',
+ "Record":'<svg viewBox="0 0 16 16"><path d="M3 1.5h7l3 3v10H3z"/><path d="M10 1.5v3h3M5.5 7.5h5M5.5 10h5M5.5 12.5h3"/></svg>',
+ "Census":'<svg viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11"/><path d="M1.5 6h13M1.5 9.5h13M6 2.5v11"/></svg>',
+ "Photograph":'<svg viewBox="0 0 16 16"><rect x="1.5" y="4" width="13" height="9.5" rx="1"/><circle cx="8" cy="8.7" r="2.6"/><path d="M5.5 4l1-2h3l1 2"/></svg>',
+ "Film":'<svg viewBox="0 0 16 16"><rect x="2" y="1.5" width="12" height="13"/><path d="M5 1.5v13M11 1.5v13M2 5h3M2 8h3M2 11h3M11 5h3M11 8h3M11 11h3"/></svg>',
+ "Physical trace":'<svg viewBox="0 0 16 16"><path d="M2 14.5h12M3.5 14.5V8l3-2.5 3 1.5 3-2v9.5"/><path d="M6.5 14.5v-3h3v3"/></svg>',
+ "Testimony":'<svg viewBox="0 0 16 16"><path d="M2 3h12v8H7l-3 3v-3H2z"/><path d="M5 6h6M5 8.3h4"/></svg>',
+ "Press":'<svg viewBox="0 0 16 16"><path d="M1.5 3h10v10.5h-9A1 1 0 0 1 1.5 12.5z"/><path d="M11.5 5.5h3v7a1 1 0 0 1-1 1h-2M3.5 5.5h6M3.5 8h6M3.5 10.5h4"/></svg>',
+ "Memorial":'<svg viewBox="0 0 16 16"><path d="M6.5 14V4.5L8 1.5l1.5 3V14M4 14.5h8M5 14v-1.5h6V14"/></svg>'
+};
+
+/* ---------- CASE DATA ---------- */
+var CASES=[
+/* ===================== 1. SENECA VILLAGE ===================== */
+{id:"seneca",no:"01",name:"Seneca Village",place:"Manhattan, New York, USA",span:"1825–1857",cat:"Erased for development",
+finding:"From 1825, Black New Yorkers bought lots on a hillside along what is now Central Park’s western edge and built a village whose property ownership gave some of its men the vote. The state’s 1853 Central Park law converted their deeds into condemnation awards. By the time this part of the park was finished in the early 1860s, nothing of the village stood above ground, and for more than a century it survived mainly in survey maps and court petitions.",
+stakes:"After 1821, New York required Black men, and only Black men, to own $250 of property to vote. Seneca Village was where that property was concentrated, and the park took it. Almost everything known about the village comes from paperwork the city generated while dispossessing it.",
+stakesR:[13,2],
+facts:[
+ {k:"First lots purchased",v:"27 September 1825",r:[2,10]},
+ {k:"Residents, 1855",v:"225 to 264",n:"225 per the Conservancy’s reconstruction; 264 per the 1855 state census as commonly cited",r:[1,5]},
+ {k:"Homes in 1855 survey",v:"52",r:[3]},
+ {k:"Institutions",v:"Three churches, a school, cemeteries",r:[1,5]},
+ {k:"Legal instrument",v:"1853 state act; eminent domain",r:[5,11]},
+ {k:"People displaced from whole park site",v:"About 1,600",r:[3,5]},
+ {k:"Residents gone by",v:"1857",r:[1,6]}
+],
+people:[
+ "Roughly two-thirds of the 1855 residents were Black and one-third were Irish immigrants, with a handful of German families.<R1,13> The first purchase was made by Andrew Williams, a 25-year-old bootblack who later worked as a cartman: three lots from John and Elizabeth Whitehead for $125. On the same day the trustees of the AME Zion church bought six lots for burials; Epiphany Davis, a store clerk, bought twelve for $578.<R2,10,13>",
+ "Residents kept livestock and gardens and drew water from Tanner’s Spring.<R6> Records show that most children attended school.<R2> Of roughly 100 Black New Yorkers eligible to vote in 1845, 10 lived in the village.<R2> Some Black owners held lots as investments and rented them out rather than living there.<R3> Black and white congregants worshipped together at All Angels’ Church.<R11>"
+],
+decisions:[
+ {who:"New York State Legislature",when:"1853",act:"Authorised the city to acquire the park site by eminent domain.",r:[5,11]},
+ {who:"Egbert L. Viele, chief engineer",when:"1855–56",act:"Surveyed the land slated for the park; his map records the village’s houses, churches and gardens as ground to be cleared.",r:[3,13]},
+ {who:"Commissioners of Estimate and Assessment",when:"1856",act:"Set an award for each condemned lot. Andrew Williams was allowed $2,335 for three lots and a house.",r:[4]},
+ {who:"New York Supreme Court",when:"1856",act:"Heard owners’ objections to their awards; petitions survive in the county’s Old Records division.",r:[16,15]},
+ {who:"City of New York",when:"July 1856",act:"Notified residents to leave by 1 August. Popular accounts attribute the final notice to Mayor Fernando Wood personally; that attribution was not confirmed in primary sources reviewed.",r:[7,11]},
+ {who:"Central Park Conservancy",when:"2001–2026",act:"Installed the first plaque (2001), interpretive signs (2019) and, from 2025, a Mellon-funded process toward permanent commemoration.",r:[5,6,12]}
+],
+timeline:[
+ {y:"1821",d:"New York imposes a $250 property qualification on Black voters.",v:"doc",r:[13]},
+ {y:"1824",d:"John Whitehead buys the farmland that becomes the village.",v:"doc",r:[1]},
+ {y:"27 Sep 1825",d:"Andrew Williams buys the first three lots; AME Zion trustees buy six for a cemetery.",v:"doc",r:[2,13]},
+ {y:"1825–32",d:"The Whiteheads sell about half their parcels to African Americans.",v:"doc",r:[2]},
+ {y:"c.1840",d:"African Union Church built near West 85th Street.",v:"doc",r:[13]},
+ {y:"1849",d:"All Angels’ Church built; its Sunday school dated from 1833.",v:"doc",r:[13]},
+ {y:"1853",d:"State legislation authorises the park. The same year, AME Zion opens a church in the village.",v:"doc",r:[9,5]},
+ {y:"1855",d:"Survey and state census count between 225 and 264 residents in 52 homes.",v:"disp",r:[1,3,5]},
+ {y:"1856",d:"Viele’s map is drawn; Williams contests his $2,335 award, valuing his property at $4,000.",v:"doc",r:[4,13]},
+ {y:"Jul 1856",d:"The New York Daily Times reports residents have been told to leave by 1 August.",v:"doc",r:[7]},
+ {y:"1857",d:"All residents have left; buildings are cleared the following year.",v:"doc",r:[6]},
+ {y:"Early 1860s",d:"This section of the park is completed; no clear trace of the village remains.",v:"doc",r:[3]},
+ {y:"1990s",d:"Scholars form the Institute for the Exploration of Seneca Village History.",v:"doc",r:[9]},
+ {y:"2001",d:"First commemorative plaque installed.",v:"doc",r:[5]},
+ {y:"2011",d:"Columbia and CUNY archaeologists excavate part of the site.",v:"doc",r:[9]},
+ {y:"2019",d:"“Discover Seneca Village” outdoor signs installed.",v:"doc",r:[6]},
+ {y:"2025–26",d:"Bicentennial; Conservancy runs a public programme toward a permanent commemoration.",v:"doc",r:[12,14]}
+],
+evidence:[
+ {t:"Map",h:"Viele topographical map, 1856",held:"New York City Municipal Archives",shows:"The cluster of houses, churches and gardens and the lane running through the village, with its boundary marked.",lim:"Drawn to plan a park. It records structures and terrain, not who owned or rented them.",v:"doc",r:[13,10]},
+ {t:"Record",h:"Condemnation maps and commissioners’ reports, 1856",held:"New York City Municipal Archives; county court records",shows:"Every private parcel taken for the park. The Conservancy calls this the clearest source on who lived in the village in 1855.",lim:"Organised by owner. Tenants surface only indirectly.",v:"doc",r:[1,13]},
+ {t:"Census",h:"New York State census, 1855",held:"New York State Archives (microfilm copies widely held)",shows:"A population of 264, the figure most often cited.",lim:"Other reconstructions give 225. The gap likely reflects boundaries and method; check which enumeration lines were used before quoting either.",v:"disp",r:[5,1]},
+ {t:"Record",h:"Andrew Williams’ affidavit of petition, 1856",held:"New York County Clerk, Division of Old Records; transcribed by CUNY’s American Social History Project",shows:"Williams owned lots 22, 23 and 43 in block 786, between 85th and 86th Streets. The commissioners allowed $2,335; he valued the lots and house at $4,000 and said he had refused an offer of $3,500.",lim:"An interested party’s claim. The transcription does not show the petition’s outcome.",v:"doc",r:[4]},
+ {t:"Press",h:"New York Daily Times, 9 July 1856",held:"Newspaper archives",shows:"A dated notice that residents must leave by 1 August, and a sample of the racist vocabulary the press applied to them.",lim:"A hostile source. Reliable for dates and for attitudes, not for conditions.",v:"doc",r:[7]},
+ {t:"Photograph",h:"Greensward Plan presentation board No. 5",held:"Central Park Conservancy / New York City Municipal Archives",shows:"A photograph of a pre-park building on the site, used by the Conservancy to suggest what village houses may have looked like.",lim:"No photograph positively identified as a Seneca Village building was found in the sources reviewed.",v:"disp",r:[17]},
+ {t:"Physical trace",h:"2011 excavation",held:"Columbia University and City University of New York archaeologists",shows:"Stone foundation walls and household artefacts, including material from the yard of a resident’s house.",lim:"A small sample of a large site; the trenches were backfilled.",v:"doc",r:[9,18,11]},
+ {t:"Physical trace",h:"Summit Rock (“Goat Hill”)",held:"In situ, Central Park",shows:"The highest natural elevation in the modern park, part of the village landscape that the park’s design preserved.",lim:"Landscape, not a built structure.",v:"doc",r:[10,12]}
+],
+claims:[
+ {c:"Seneca Village was a shantytown of squatters.",v:"lore",w:"Park advocates and newspapers used these terms in the 1850s. Property records show ownership dating to 1825; Andrew Williams had held his lots for 31 years when the city took them.",r:[6,4,2]},
+ {c:"The village was fading before the park came.",v:"lore",w:"The record points the other way: AME Zion opened a new church in the village in 1853, the year of the park law. The end was a legal taking with dated notices.",r:[9,5,7]},
+ {c:"Owners were paid for their land.",v:"doc",w:"Commissioners set awards for each lot, and owners could contest them in court.",r:[4,16]},
+ {c:"The awards cheated Black owners.",v:"disp",w:"Williams’ petition put his award at about 58% of his own valuation. Sara Cedar Miller’s archival comparison suggests awards tracked the market of the day, with location the main driver of value.",r:[4,8]},
+ {c:"Police drove the last residents out by force in 1857.",v:"disp",w:"Appears in popular retellings without a primary citation in the sources reviewed. The documented sequence is a notice in July 1856 and departures by 1857.",r:[11,7]},
+ {c:"The name came from the Seneca nation.",v:"disp",w:"The origin was never recorded. Theories include the Seneca people, the West African region of Senegal, and, per the Conservancy’s historian emerita, an origin in period slurs.",r:[10]}
+],
+remains:[
+ {w:"Summit Rock and surviving outcrops",s:"Natural features of the village landscape kept by the park’s design.",r:[10,12]},
+ {w:"Foundations below ground",s:"Excavated and recorded in 2011, then reburied.",r:[9]},
+ {w:"“Discover Seneca Village” signs",s:"Near West 85th Street and Central Park West; guided tours continued through 2026.",r:[14]},
+ {w:"Permanent commemoration",s:"A community-informed design framework is being developed under a Mellon-funded programme launched in 2025.",r:[12]},
+ {w:"Descendants",s:"Including relatives of Andrew Williams and of the Lyons family, who have taken part in public programmes.",r:[9,19]}
+],
+map:{then:"1855",now:"2026",conf:"Medium",
+ note:"Schematic after Viele’s 1856 survey and Central Park Conservancy signage. Street lines follow the Manhattan grid (“grid north”). Church, spring and house positions are approximate; house count is illustrative.",
+ svgThen:function(){
+  var s='<rect class="m-land" width="600" height="380"/>';
+  for(var st=79;st<=90;st++){var y=350-(st-79)*29;s+='<line class="m-grid" x1="80" y1="'+y+'" x2="560" y2="'+y+'"/><text class="m-label-s" x="8" y="'+(y+3)+'">'+st+'th St</text>';}
+  [80,230,380,530].forEach(function(x){s+='<line class="m-ave" x1="'+x+'" y1="14" x2="'+x+'" y2="364"/>';});
+  s+='<rect class="m-water" x="232" y="147" width="146" height="203"/><text class="m-label-i" x="246" y="252">Croton Receiving</text><text class="m-label-i" x="246" y="267">Reservoir (1842)</text>';
+  s+='<path class="m-ghost" d="M86,262 L224,262 L226,74 L150,62 L86,70 Z"/>';
+  s+='<path d="M90,255 C130,222 160,172 212,86" fill="none" stroke="#9c8a6c" stroke-width="1.4" stroke-dasharray="4 3"/>';
+  s+=scatter(11,48,94,74,126,182,"m-house",7,5);
+  s+='<path class="m-rock" d="M98,228 C104,216 124,214 130,226 C134,238 116,246 104,242 Z"/>';
+  s+='<circle cx="205" cy="212" r="5" fill="#8fb3c2" stroke="#5f8796"/>';
+  s+='<text class="m-title" x="92" y="56">SENECA VILLAGE (BOUNDARY APPROX.)</text>';
+  s+='<text class="m-label-s" x="56" y="376">Eighth Ave line</text><text class="m-label-s" x="206" y="376">Seventh Ave</text><text class="m-label-s" x="360" y="376">Sixth Ave</text><text class="m-label-s" x="510" y="376">Fifth Ave</text>';
+  s+='<text class="m-label-s" x="400" y="90">Planned street grid (dashed)</text><text class="m-label-s" x="400" y="102">largely unbuilt here in 1855</text>';
+  return s;},
+ svgNow:function(){
+  var s='<rect class="m-park" width="600" height="380"/>';
+  s+='<rect class="m-city" x="0" y="0" width="78" height="380"/>'+grid(0,0,78,380,39,29,"m-cityblock");
+  s+='<rect class="m-city" x="532" y="0" width="68" height="380"/>'+grid(532,0,600,380,34,29,"m-cityblock");
+  s+='<rect class="m-water" x="250" y="18" width="270" height="124" rx="54"/><text class="m-label-i" x="300" y="84">Reservoir (north of 86th St)</text>';
+  s+='<ellipse class="m-lawn" cx="305" cy="245" rx="72" ry="72"/><text class="m-label" x="262" y="240">Great Lawn</text><text class="m-label-s" x="250" y="254">on the filled reservoir site</text>';
+  s+='<ellipse class="m-water" cx="318" cy="337" rx="52" ry="12"/><text class="m-label-i" x="290" y="362">Turtle Pond</text>';
+  s+='<path class="m-drive" d="M150,380 C138,300 176,222 160,142 S150,40 172,0"/><text class="m-label-s" x="168" y="300" transform="rotate(-80 168 300)">West Drive</text>';
+  s+='<path class="m-path" d="M80,176 C110,180 130,170 160,175"/><path class="m-path" d="M80,234 C110,236 140,230 158,240"/><path class="m-path" d="M200,380 C210,320 230,300 236,250"/><path class="m-path" d="M80,118 C120,120 150,110 165,118"/>';
+  s+='<path class="m-ghost" d="M86,262 L224,262 L226,74 L150,62 L86,70 Z" style="fill:none"/>';
+  s+='<path class="m-rock" d="M98,228 C104,216 124,214 130,226 C134,238 116,246 104,242 Z"/>';
+  s+='<text class="m-label-s" x="4" y="372">Central Park West</text><text class="m-label-s" x="540" y="372">Fifth Ave</text>';
+  s+='<text class="m-title" x="92" y="56">FORMER VILLAGE OUTLINE (DASHED)</text>';
+  return s;},
+ pins:[
+  {x:150,y:178,l:"then",t:"African Union Church (c.1840)",d:"The first church in the village, a branch of the African Union Methodist church, near West 85th Street. Position approximate.",r:[13]},
+  {x:118,y:200,l:"then",t:"All Angels’ Church (1849)",d:"A mission of St Michael’s, with a Sunday school from 1833; Black and white congregants worshipped together. Position approximate.",r:[13,11]},
+  {x:184,y:146,l:"then",t:"AME Zion Church (1853) and cemetery lots",d:"The AME Zion trustees bought six lots in 1825 for burials and opened a church in the village in 1853. Position approximate.",r:[13,9]},
+  {x:205,y:212,l:"then",t:"Tanner’s Spring",d:"A water source for residents, who otherwise relied on wells and the river.",r:[6]},
+  {x:305,y:200,l:"then",t:"Croton Receiving Reservoir",d:"Opened in 1842 between 79th and 86th Streets and Sixth and Seventh Avenues, it bordered the village to the east. It was removed in the 1930s; the Great Lawn and Turtle Pond now occupy the site.",r:[20]},
+  {x:114,y:230,l:"both",t:"Summit Rock (“Goat Hill”)",d:"The highest natural point in today’s park and a surviving piece of the village landscape.",r:[10]},
+  {x:84,y:176,l:"now",t:"West 85th Street entrance",d:"The starting point for Conservancy tours of the site and the location of interpretive signs.",r:[14,3]},
+  {x:136,y:192,l:"now",t:"“Discover Seneca Village” signs",d:"Installed in 2019, marking the sites of churches, homes, gardens and natural features.",r:[6,10]}
+ ]},
+sources:[
+ ["Central Park Conservancy — Seneca Village History","https://www.centralparknyc.org/seneca-village-history"],
+ ["Central Park Conservancy — Before Central Park: The Story of Seneca Village","https://www.centralparknyc.org/blog/seneca-village"],
+ ["Historical Marker Database — Seneca Village Community wayside (Conservancy, 2020)","https://www.hmdb.org/m.asp?m=171135"],
+ ["CUNY American Social History Project — Andrew Williams’ Affidavit of Petition (1856)","https://herb.ashp.cuny.edu/items/show/2942"],
+ ["Gotham Gazette — Death of Seneca Village","https://www.gothamgazette.com/environment/1902-death-of-seneca-village"],
+ ["Encyclopaedia Britannica — Seneca Village","https://www.britannica.com/place/Seneca-Village"],
+ ["The Root — Unearthing Black History in Central Park","https://www.theroot.com/unearthing-black-history-in-central-park"],
+ ["Sara Cedar Miller, Columbia University Press blog — Seneca Village and Fair Compensation","https://cupblog.org/2022/06/19/seneca-village-and-fair-compensation-what-the-archives-reveal-sara-cedar-miller/"],
+ ["Central Park Conservancy — Artifacts and Archives: The Rediscovery and Research of Seneca Village","https://centralparknyc.org/blog/rediscovery-and-research-of-seneca-village"],
+ ["Wikipedia — Seneca Village","https://en.wikipedia.org/wiki/Seneca_Village","secondary"],
+ ["Mental Floss — Seneca Village: When New York City Destroyed a Thriving Black Community","https://www.mentalfloss.com/article/63039/seneca-village-community-died-so-central-park-could-live","secondary"],
+ ["Central Park Conservancy — Commemorating Seneca Village","https://www.centralparknyc.org/commemorating-seneca-village"],
+ ["Landmark West — The Lost Buildings of Seneca Village","https://www.landmarkwest.org/the-lost-buildings-of-seneca-village/"],
+ ["Central Park Conservancy — Sacred Sites Open House, May 2026","https://www.centralparknyc.org/activities/events/sacred-sites-open-house-seneca-village-and-its-historic-church-sites"],
+ ["Gotham Center — Review of Sara Cedar Miller’s Before Central Park","https://gothamcenter.org/blog/review-sara-cedar-millers-before-central-park"],
+ ["Inverse Condemnation — Seneca Village and eminent domain","https://www.inversecondemnation.com/?p=6604","secondary"],
+ ["OpenHistoricalMap — Seneca Village relation (with Conservancy image caption)","https://openhistoricalmap.org/relation/2692834","secondary"],
+ ["Britannica Kids — Seneca Village (excavation findings)","https://kids.britannica.com/kids/article/Seneca-Village/632603"],
+ ["Olmsted Network — Before Central Park: A Conversation on Seneca Village","https://olmsted.org/events/before-central-park-a-conversation-on-seneca-village/"],
+ ["Central Park Conservancy — Water in Central Park (Receiving Reservoir)","https://www.centralparknyc.org/articles/water-central-park"]
+]},
+
+/* ===================== 2. AFRICVILLE ===================== */
+{id:"africville",no:"02",name:"Africville",place:"Halifax, Nova Scotia, Canada",span:"1848–1970",cat:"Erased for development",
+finding:"Africville stood on Halifax’s Bedford Basin shore for more than a century. The city never extended water or sewer service, zoned the area industrial, and sited its dump, an infectious-diseases hospital and a prison beside it. Planners then cited the resulting conditions as grounds for removal. Between 1964 and 1970 about 400 people from 80 families were relocated, often into public housing, and every building was demolished.",
+stakes:"Only 14 residents held clear legal title, so most households negotiated from weakness: those without title were offered a flat $500. The case shows how municipal neglect can build the record later used to justify clearance.",
+stakesR:[2],
+facts:[
+ {k:"First recorded land purchases",v:"1848",n:"William Brown Sr. and William Arnold",r:[11,1]},
+ {k:"People relocated",v:"About 400, from 80 families",r:[1]},
+ {k:"Residents with clear legal title",v:"14",r:[2,14]},
+ {k:"Payment for those without title",v:"$500 flat",r:[2]},
+ {k:"Relocation",v:"1964–1967 mainly; last home 2 Jan 1970",r:[1,2]},
+ {k:"Apology and settlement",v:"24 February 2010",n:"$4.5m package incl. 2.5 acres and a church replica",r:[2,16]}
+],
+people:[
+ "Africville was founded by Black Refugees who reached Nova Scotia during and after the War of 1812. William Brown Sr., whose family came from the Chesapeake region in 1815, and William Arnold bought the first parcels in 1848; their combined 12 acres set the community’s bounds.<R11> Oral history connects some families to the land earlier still.<R1> The Seaview African United Baptist Church opened in 1849 and remained the community’s centre.<R6>",
+ "Before relocation the community had its own stores, a school and a post office.<R1> Water was carried by hand from the community’s wells. Bob Brooks’s photographs from the early 1960s show laundry lines, children picking blueberries beside the railway tracks, and houses seen from the edge of the city dump.<R8>"
+],
+decisions:[
+ {who:"Halifax City Council",when:"1947",act:"Designated Africville as industrial land.",r:[1]},
+ {who:"Halifax City Council",when:"1955",act:"Relocated the city dump near Africville; the Canadian Encyclopedia puts it 350 metres from the community’s western edge.",r:[1,6]},
+ {who:"Gordon Stephenson, planner",when:"1957",act:"His redevelopment study of Halifax recommended urban renewal including removal of the Africville “slum”.",r:[3,15]},
+ {who:"City Development Department",when:"July–Oct 1962",act:"A staff report recommended elimination; council’s committee of the whole recommended in October that the area be removed.",r:[4,8]},
+ {who:"Albert Rose, University of Toronto",when:"6 Dec 1963",act:"Commissioned by the city; recommended expropriation with full compensation and relocation help, and advised against a separate housing project for residents.",r:[3,5]},
+ {who:"Halifax City Council",when:"Jan 1964",act:"Authorised relocation. The first property was bought in July 1964.",r:[7,1]},
+ {who:"Mayor Peter Kelly, Halifax Regional Municipality",when:"24 Feb 2010",act:"Delivered a formal apology as part of a settlement with the Africville Genealogy Society.",r:[1,2]}
+],
+timeline:[
+ {y:"1848",d:"William Brown Sr. and William Arnold buy land on the Bedford Basin.",v:"doc",r:[11]},
+ {y:"1849",d:"Seaview African United Baptist Church opens.",v:"doc",r:[6]},
+ {y:"1947",d:"Africville designated industrial land; after a fire, relocation is discussed.",v:"dec",r:[1,2]},
+ {y:"1955",d:"City dump moved beside the community; an infectious-diseases hospital and a prison are nearby.",v:"dec",r:[1]},
+ {y:"1957",d:"Stephenson redevelopment study recommends removal.",v:"doc",r:[3]},
+ {y:"23 Aug 1962",d:"Residents meet at Seaview church to respond to the city’s recommendation; Bob Brooks photographs the meeting.",v:"doc",r:[8]},
+ {y:"Oct 1962",d:"Council committee recommends that the Africville area be removed.",v:"doc",r:[4]},
+ {y:"6 Dec 1963",d:"Rose Report delivered to the city.",v:"doc",r:[5]},
+ {y:"Jan 1964",d:"Council authorises relocation; the first property is purchased in July.",v:"doc",r:[7,1]},
+ {y:"1964–67",d:"Most families moved. When a moving company cancelled, the city used dump trucks to carry belongings.",v:"doc",r:[6]},
+ {y:"1967 or 1969",d:"Seaview church demolished at night. The Canadian Encyclopedia says 1967; another account says 1969.",v:"disp",r:[6,14]},
+ {y:"2 Jan 1970",d:"The last home, Aaron “Pa” Carvery’s, is demolished.",v:"doc",r:[1]},
+ {y:"1970",d:"Eddie Carvery begins a protest occupation on the site.",v:"doc",r:[11]},
+ {y:"1971",d:"Clairmont and Magill publish the Africville Relocation Report.",v:"doc",r:[9]},
+ {y:"1996–97",d:"Former residents sue the city (1996); Africville is designated a National Historic Site (Halifax cites 1996, Parks Canada records 1997).",v:"disp",r:[1,10]},
+ {y:"24 Feb 2010",d:"Halifax apologises.",v:"doc",r:[1]},
+ {y:"2011–12",d:"Seaview Park renamed Africville (2011); the church replica opens as a museum (2012).",v:"doc",r:[2,12]},
+ {y:"2024–25",d:"The city sells adjacent land to the Africville Heritage Trust for $1 (2024); the Trust serves an eviction notice on Carvery’s protest trailer (2025).",v:"doc",r:[13]}
+],
+evidence:[
+ {t:"Record",h:"Stephenson Redevelopment Study, 1957",held:"Halifax Municipal Archives",shows:"A city-wide urban renewal plan that included removing the Africville “slum”.",lim:"A planner’s assessment with no resident voice.",v:"doc",r:[3]},
+ {t:"Record",h:"Rose Report, 6 December 1963",held:"Halifax Municipal Archives, ref. 971.6225H",shows:"Recommended expropriation with full compensation; acknowledged complex tenure and a strong sense of community.",lim:"Commissioned after city staff had already recommended relocation.",v:"doc",r:[3,5]},
+ {t:"Record",h:"Relocation Program compensation case files, 1964–1971",held:"Halifax Municipal Archives",shows:"Household-by-household negotiations and payments.",lim:"Generated by the city; terms reflect unequal bargaining power.",v:"doc",r:[3]},
+ {t:"Photograph",h:"Bob Brooks, Africville, c.1962–65",held:"Nova Scotia Archives, accession 1989-468 vol. 16",shows:"Houses photographed from the edge of the city dump; children picking blueberries by the railway; the 23 August 1962 public meeting at Seaview church; a bird’s-eye view over the Basin.",lim:"An outsider’s lens; most frames are undated, many from about 1965.",v:"doc",r:[8]},
+ {t:"Record",h:"Africville Relocation Report, 1971",held:"Dalhousie University (Institute of Public Affairs); DalSpace",shows:"Donald Clairmont and Dennis Magill’s study of the relocation, still the core primary-research account.",lim:"Produced by an institute that had earlier advised the city.",v:"doc",r:[9]},
+ {t:"Record",h:"Public Health and Welfare Committee minutes, 1946–1970",held:"Halifax Municipal Archives",shows:"Residents’ demands for services and the city’s responses, through to reparations.",lim:"Committee summaries, not verbatim.",v:"doc",r:[3]},
+ {t:"Testimony",h:"“Walking Africville” audio tour",held:"Africville Heritage Trust / Halifax Regional Municipality",shows:"Former residents narrating the 1950s–60s community in place.",lim:"Recorded decades later.",v:"doc",r:[1]},
+ {t:"Physical trace",h:"The park landscape",held:"Africville National Historic Site",shows:"Parks Canada lists the open landscape, potential archaeological remnants and the commemorative sundial as heritage elements.",lim:"No buildings survive.",v:"doc",r:[10]}
+],
+claims:[
+ {c:"Africville was a slum.",v:"dec",w:"The conditions the city cited followed decisions the city made: no water or sewer service, industrial zoning, a dump 350 metres away.",r:[1,6,7]},
+ {c:"Residents agreed to move.",v:"disp",w:"A 1962 meeting of about 100 residents voted strongly against relocation. A later meeting endorsed the Rose Report by 37 of 41 votes, in a community of about 400.",r:[6,2,12]},
+ {c:"Africville was founded by Black Loyalists in the 1700s.",v:"lore",w:"The documented founding is the 1848 purchase by Black Refugees. Oral histories of earlier ties to the land remain part of the record.",r:[11,1]},
+ {c:"Africville was razed to build the MacKay Bridge.",v:"disp",w:"Bridge approaches and highway work took part of the land. But removal was planned from 1957 as slum clearance and industrial use, and port development at Fairview Cove stopped short of Africville itself.",r:[11,2,3]},
+ {c:"Families were moved in city dump trucks.",v:"doc",w:"Recorded by the Canadian Encyclopedia; residents describe it as the defining humiliation of the relocation.",r:[6]},
+ {c:"The 2010 settlement made residents whole.",v:"disp",w:"The settlement funded land, a church replica and a trust. Not all former residents accepted it, and some continue to seek individual compensation.",r:[7,16]}
+],
+remains:[
+ {w:"Africville Park",s:"Municipal park on part of the original land; renamed Africville in 2011.",r:[2,10]},
+ {w:"Africville Museum",s:"In a replica of Seaview church at 5795 Africville Road, opened 2012.",r:[1,12]},
+ {w:"Sundial and possible archaeology",s:"Listed by Parks Canada among the site’s heritage elements.",r:[10]},
+ {w:"Annual reunion",s:"A pilgrimage by former residents and descendants through the Africville Genealogy Society.",r:[10]},
+ {w:"The protest",s:"Eddie Carvery has occupied the site since 1970; the Heritage Trust served an eviction notice on his trailer in July 2025.",r:[11,13]}
+],
+map:{then:"c.1962",now:"2026",conf:"Low–medium",
+ note:"Relative positions only, drawn from municipal descriptions, Parks Canada’s site record and 1960s photograph captions. Shoreline generalised; house count illustrative.",
+ svgThen:function(){
+  var s='<rect class="m-water" width="600" height="380"/>';
+  s+='<path class="m-land" d="M0,150 C80,140 160,150 230,160 C300,170 360,176 410,196 C450,216 470,250 480,300 L470,380 H0 Z"/>';
+  s+='<path class="m-land" d="M562,196 C540,260 545,320 560,380 H600 V196 Z"/>';
+  s+='<text class="m-label-i" x="200" y="70">Bedford Basin</text><text class="m-label-i" x="490" y="250" transform="rotate(70 500 250)">The Narrows</text>';
+  s+='<path class="m-dump" d="M178,204 L268,200 L276,258 L186,264 Z"/><text class="m-label-s" x="190" y="282">City dump (1955)</text>';
+  s+='<path class="m-road-edge" d="M250,300 C320,262 380,246 446,240"/><path class="m-road" d="M250,300 C320,262 380,246 446,240"/>';
+  s+=scatter(22,40,300,190,140,64,"m-house",8,6);
+  s+='<path class="m-rail" d="M0,170 C90,162 170,170 240,180 C320,192 380,202 420,222 C450,240 462,280 462,380"/>';
+  s+='<rect x="296" y="316" width="22" height="14" fill="#8d8371"/><rect x="372" y="316" width="24" height="12" fill="#8d8371"/>';
+  s+='<rect x="354" y="176" width="12" height="9" fill="#efe8d7" stroke="#3b362d"/><path d="M360,170 v6" stroke="#3b362d"/>';
+  s+='<text class="m-title" x="20" y="365">NORTH END, HALIFAX PENINSULA</text><text class="m-label-s" x="565" y="210">Dartmouth</text>';
+  return s;},
+ svgNow:function(){
+  var s='<rect class="m-water" width="600" height="380"/>';
+  s+='<path class="m-land" d="M0,150 C80,140 160,150 230,160 C300,170 360,176 410,196 C450,216 470,250 480,300 L470,380 H0 Z"/>';
+  s+='<path class="m-land" d="M562,196 C540,260 545,320 560,380 H600 V196 Z"/>';
+  s+='<rect class="m-ind" x="40" y="112" width="200" height="56"/><text class="m-label-s" x="60" y="140">Fairview Cove container terminal</text>';
+  s+='<path class="m-ind2" d="M240,140 L320,150 L322,172 L240,166 Z"/><text class="m-label-s" x="246" y="135">Port infill (from 2012)</text>';
+  s+='<path class="m-park" d="M296,178 L446,204 C456,230 450,262 440,268 L300,268 Z"/>';
+  s+='<path class="m-rail" d="M0,170 C90,162 170,170 240,180 C320,192 380,202 420,222 C450,240 462,280 462,380"/>';
+  s+='<path class="m-road-edge" d="M300,380 C330,330 370,300 404,292"/><path class="m-road" d="M300,380 C330,330 370,300 404,292"/>';
+  s+='<circle cx="404" cy="292" r="24" fill="none" stroke="#bdb39c" stroke-width="7"/><circle cx="404" cy="292" r="24" fill="none" stroke="#fbf8f0" stroke-width="4"/>';
+  s+='<path class="m-bridge" d="M426,284 L600,236"/><path class="m-bridge2" d="M426,284 L600,236"/>';
+  s+='<text class="m-label" x="470" y="246" transform="rotate(-15 470 246)">A. Murray MacKay Bridge</text>';
+  s+='<rect x="354" y="176" width="12" height="9" fill="#fffdf8" stroke="#1f5b86" stroke-width="1.5"/>';
+  s+='<circle cx="400" cy="216" r="4" fill="#fffdf8" stroke="#3b362d"/>';
+  s+='<text class="m-label" x="318" y="252">Africville Park</text>';
+  return s;},
+ pins:[
+  {x:360,y:178,l:"then",t:"Seaview African United Baptist Church",d:"Opened 1849; the community’s spiritual and social centre. Demolished at night during the relocation.",r:[6,1]},
+  {x:226,y:232,l:"then",t:"City dump",d:"Moved beside Africville in 1955; Brooks photographed homes from its edge around 1965.",r:[1,8]},
+  {x:308,y:322,l:"then",t:"Prison",d:"One of several institutions the city placed near the community, alongside an infectious-diseases hospital.",r:[1]},
+  {x:384,y:322,l:"then",t:"Infectious-diseases hospital",d:"Sited near Africville; cited by the city among conditions that made the area unfit for housing.",r:[1]},
+  {x:424,y:224,l:"then",t:"Railway through the community",d:"Tracks ran through the settlement; visible in Brooks’s photographs of children picking blueberries.",r:[8]},
+  {x:360,y:178,l:"now",t:"Africville Museum (church replica)",d:"Built on the original church site under the 2010 settlement; opened in 2012.",r:[1,12]},
+  {x:372,y:236,l:"now",t:"Africville Park",d:"Formerly Seaview Park; renamed in 2011. Site of the annual reunion.",r:[2,10]},
+  {x:404,y:292,l:"now",t:"MacKay Bridge interchange",d:"Highway approaches occupy part of the former community.",r:[11]},
+  {x:140,y:140,l:"now",t:"Fairview Cove terminal",d:"Port facilities to the west; development did not extend as far east as Africville itself.",r:[2]},
+  {x:400,y:216,l:"now",t:"Commemorative sundial",d:"A heritage element of the National Historic Site.",r:[10]}
+ ]},
+sources:[
+ ["Halifax Regional Municipality — Africville","https://www.halifax.ca/about-halifax/diversity-inclusion/african-nova-scotian-affairs/africville"],
+ ["Wikipedia — Africville Apology","https://en.wikipedia.org/wiki/Africville_Apology","secondary"],
+ ["Halifax Municipal Archives — Africville source guide (Stephenson, Rose, case files, minutes)","https://halifax.ca/node/9391"],
+ ["Halifax Municipal Archives — Submissions to Council re Africville, 25 Oct 1962","https://cdn.halifax.ca/media/68503"],
+ ["Halifax Municipal Archives — Report of Dr Albert Rose re Africville (council copy)","https://cdn.halifax.ca/media/68354"],
+ ["The Canadian Encyclopedia — Africville","https://www.thecanadianencyclopedia.ca/en/article/africville"],
+ ["Canadian Museum for Human Rights — The story of Africville","https://humanrights.ca/story/the-story-of-africville"],
+ ["Nova Scotia Archives — Bob Brooks’ Photographic Portrait of Africville in the 1960s","https://archives.novascotia.ca/africville/"],
+ ["Dalhousie University Libraries — Institute of Public Affairs and the Africville Relocation Report","https://digitalexhibits.library.dal.ca/exhibits/show/lives-of-dal-volume-2/chapter-2-3/institute-of-public-affairs"],
+ ["Parks Canada — Africville National Historic Site","https://parks.canada.ca/culture/designation/lieu-site/africville"],
+ ["Wikipedia — Africville","https://en.wikipedia.org/wiki/Africville","secondary"],
+ ["Canada’s History — Remembering Africville (transcript)","https://www.canadashistory.ca/explore/settlement-immigration/remembering-africville/remembering-africville-transcript"],
+ ["CBC News — Long-standing Africville activist says he will fight latest eviction notice (July 2025)","https://www.cbc.ca/lite/story/1.7595810"],
+ ["rabble.ca — Africville","https://rabble.ca/activist-toolkit/africville/","secondary"],
+ ["Acadiensis — The View from Jacob Street: Reframing Urban Renewal in Postwar Halifax","https://journals.lib.unb.ca/index.php/Acadiensis/article/download/30447/1882525799?inline=1"],
+ ["EBSCO Research Starters — Africville","https://www.ebsco.com/research-starters/history/africville/","secondary"]
+]},
+
+/* ===================== 3. LIDICE ===================== */
+{id:"lidice",no:"03",name:"Lidice",place:"Near Kladno, Protectorate of Bohemia and Moravia (now Czech Republic)",span:"1942",cat:"Erased by state or war",
+finding:"On 10 June 1942 German forces shot the men of Lidice, deported its women and children, then burned and dynamited the village and filmed the destruction. The regime announced the act by radio the next day. Lidice is this casebook’s clearest instance of erasure designed as public punishment: the disappearance itself was the message, and the stated reason for it was false.",
+stakes:"The village was chosen on a pretext: a letter written to end an affair, and a family with a son serving in Britain. The case shows how a state can manufacture the record that justifies erasure, and how thoroughly that record can fail once others take up the name.",
+stakesR:[4,3],
+facts:[
+ {k:"Population, 1942",v:"About 500",n:"503 in standard accounts",r:[1,2]},
+ {k:"Men shot at the Horák farm, 10 June",v:"173",r:[1]},
+ {k:"Children gassed at Chełmno",v:"82",r:[1]},
+ {k:"Total killed in the reprisal",v:"About 340",n:"192 men, 60 women, 88 children",r:[2]},
+ {k:"Survivors who returned",v:"143 women, 17 children",r:[1]},
+ {k:"Order",v:"Hitler, via State Secretary K. H. Frank",r:[5]}
+],
+people:[
+ "Lidice was a small community north-west of Prague, with about 500 residents in 1942.<R1> It lay beside the Kladno mining district, and the occupiers seized further Lidice men from the Kladno collieries after the massacre.<R11> It had a church of St Martin and a school, whose foundations are still visible.<R15>",
+ "The Horák family had a son, Josef, serving with the Czechoslovak forces in Britain, a fact on the Gestapo’s lists. Combined with an intercepted letter that named the village, this was enough for the occupiers.<R4,11> Of about 105 children, a few judged racially suitable were sent for Germanisation; one, Václav Zelenka, later became mayor of the rebuilt village.<R2,7>"
+],
+decisions:[
+ {who:"Adolf Hitler",when:"27 May – 9 Jun 1942",act:"After the attack on Heydrich, first demanded mass executions of Czechs, scaled back after Frank warned of the effect on labour, then ordered an exemplary reprisal against a single community.",r:[5,12]},
+ {who:"Karl Hermann Frank, State Secretary",when:"June 1942",act:"Relayed the order, instructed the Security Police to destroy Lidice and attended the destruction. Tried and executed by a Czechoslovak court after the war.",r:[5,11]},
+ {who:"Horst Böhme, Security Police commander, Prague",when:"10 Jun 1942",act:"Carried out the destruction; ordered men shot ten at a time to speed the killing.",r:[5,2]},
+ {who:"Kladno Schutzpolizei, Gestapo and Wehrmacht units",when:"Night of 9–10 Jun",act:"Surrounded the village and arrested all residents.",r:[1]},
+ {who:"Adolf Eichmann",when:"Late June 1942",act:"Ordered the killing of the remaining children, according to standard secondary accounts.",r:[13]},
+ {who:"Kurt Daluge, acting Reich Protector",when:"June 1942",act:"Attended the destruction; with Frank arranged for a film unit to record it.",r:[5]}
+],
+timeline:[
+ {y:"27 May 1942",d:"Reinhard Heydrich attacked in Prague.",v:"doc",r:[2]},
+ {y:"4 Jun 1942",d:"Heydrich dies of his wounds.",v:"doc",r:[10]},
+ {y:"Early Jun",d:"Factory owner Jaroslav Pála passes an intercepted letter to the Gestapo; written by Václav Říha to end an affair, it is read as a link to the attackers.",v:"doc",r:[4]},
+ {y:"9 Jun",d:"Hitler’s orders for Lidice are issued.",v:"doc",r:[12]},
+ {y:"9–10 Jun",d:"Village surrounded overnight; residents arrested.",v:"doc",r:[1]},
+ {y:"10 Jun",d:"173 men shot at the Horák farm; the village is burned, blown up and filmed.",v:"doc",r:[1,5]},
+ {y:"11 Jun",d:"German radio announces the destruction and says the children are being re-educated.",v:"doc",r:[7]},
+ {y:"12–14 Jun",d:"184 women taken by train to Ravensbrück.",v:"doc",r:[2]},
+ {y:"2 Jul",d:"81 children handed to the Łódź Gestapo and gassed at Chełmno.",v:"doc",r:[13]},
+ {y:"Sep 1942",d:"Barnett Stross founds the “Lidice Shall Live” campaign in Stoke-on-Trent.",v:"doc",r:[3]},
+ {y:"1945",d:"143 women and 17 children return.",v:"doc",r:[1]},
+ {y:"1947",d:"Czechoslovakia begins building a new Lidice beside the old site.",v:"doc",r:[1]},
+ {y:"1962",d:"Memorial and museum open.",v:"doc",r:[1]},
+ {y:"1969–2000",d:"Marie Uchytilová sculpts the 82 children; casting completed with donations after her death in 1989.",v:"doc",r:[1,8]},
+ {y:"Mar 2024",d:"Lidice Memorial launches a fundraising campaign to restore the children’s sculpture.",v:"doc",r:[8]}
+],
+evidence:[
+ {t:"Film",h:"German film unit footage of the destruction",held:"Shown by the Lidice Memorial; copies in film archives",shows:"The perpetrators’ own record of the burning and demolition, arranged by Frank and Daluge.",lim:"Made to intimidate; it frames the act as the regime wanted it seen.",v:"doc",r:[5]},
+ {t:"Press",h:"AP report quoting German radio, June 1942",held:"Newspaper archives",shows:"The regime publicised the killings of men and the deportation of women, and claimed the children had been placed in educational institutions.",lim:"Propaganda relayed as news; the claim about children was false.",v:"doc",r:[2,7]},
+ {t:"Record",h:"The pretext letter",held:"Described in Lidice Memorial and RAF Museum accounts",shows:"A letter to a factory employee, reported to the Gestapo by the owner, Jaroslav Pála. Its real purpose was to end an extramarital affair.",lim:"Known through later accounts, not reproduced here.",v:"doc",r:[4]},
+ {t:"Record",h:"K. H. Frank’s postwar testimony",held:"Czechoslovak war crimes proceedings, Prague",shows:"Frank’s account of Hitler’s initial order for mass executions and its revision.",lim:"Self-serving testimony from a defendant.",v:"doc",r:[11]},
+ {t:"Testimony",h:"Survivor accounts",held:"Lidice Memorial; published interviews",shows:"Marie Šupíková, aged 9 in 1942, on the transport to Poland; Václav Zelenka on Germanisation in a German family.",lim:"Childhood memories recorded decades later.",v:"doc",r:[6,7]},
+ {t:"Physical trace",h:"Foundations and the mass grave",held:"Lidice Memorial site",shows:"Visible foundations of the Horák farm, the church of St Martin and the school; a cross over the men’s grave.",lim:"The site was levelled and reshaped after 1942.",v:"doc",r:[15,14]},
+ {t:"Memorial",h:"Memorial to the Children Victims of the War",held:"Lidice Memorial",shows:"Uchytilová’s 82 bronze children, one for each child killed at Chełmno; the first 30 installed in 1995, completed in 2000.",lim:"A commemoration, not evidence of events.",v:"doc",r:[1,8]}
+],
+claims:[
+ {c:"Lidice sheltered Heydrich’s assassins.",v:"lore",w:"The occupiers’ stated justification. No connection was found; the letter that triggered suspicion concerned an affair.",r:[3,4]},
+ {c:"The intercepted note actually referred to a different village called Lidice.",v:"lore",w:"Appears in at least one popular history. Not supported by the Czech government or RAF Museum accounts reviewed, which trace the letter to Pála’s factory.",r:[9,3,4]},
+ {c:"The children were sent for re-education.",v:"lore",w:"German radio’s claim. Of about 105 children, 82 were gassed at Chełmno, six died in Lebensborn homes and 17 returned.",r:[7,13]},
+ {c:"The death toll is settled.",v:"disp",w:"Sources agree on about 340 dead but divide the figure differently: 173 men shot on site, 192 men in total once those killed elsewhere are included; women’s deaths are given as 60 by some accounts and 71 by others.",r:[1,2,16]},
+ {c:"Lidice was wiped off the map.",v:"doc",w:"That was the intent, carried out in full. It failed in a lasting sense: villages and people abroad took the name, and a new Lidice was built from 1947.",r:[12,1]}
+],
+remains:[
+ {w:"The memorial site",s:"The men’s mass grave and the foundations of the farm, church and school.",r:[15,14]},
+ {w:"Museum (1962)",s:"Just north of the original village.",r:[1,7]},
+ {w:"The children’s sculpture",s:"Completed 2000; subject to a restoration campaign launched in 2024.",r:[1,8]},
+ {w:"Rose garden",s:"Between the old and new villages; planted through Stross’s movement in the 1950s.",r:[3]},
+ {w:"New Lidice",s:"Built from 1947 for returning survivors.",r:[1]}
+],
+map:{then:"1942",now:"2026",conf:"Low",
+ note:"Illustrative layout only, drawn from site descriptions (farm, church, school, pond, road between Kladno and Prague; museum to the north; rose garden and linden avenue toward the new village). Not derived from a cadastral map; house count illustrative.",
+ svgThen:function(){
+  var s='<rect class="m-field" width="600" height="380"/>';
+  for(var i=0;i<8;i++){s+='<rect class="m-field2" x="'+(i*80-10)+'" y="'+(i%2?0:280)+'" width="60" height="100" opacity=".55"/>';}
+  s+='<path class="m-stream" d="M0,232 C120,222 200,250 300,240 S480,212 600,226"/>';
+  s+='<ellipse class="m-water" cx="332" cy="232" rx="30" ry="11"/>';
+  s+='<path class="m-road-edge" d="M0,202 C150,190 450,190 600,178"/><path class="m-road" d="M0,202 C150,190 450,190 600,178"/>';
+  s+='<text class="m-label-s" x="8" y="188">← to Kladno</text><text class="m-label-s" x="520" y="166">to Prague →</text>';
+  s+=scatter(33,90,120,160,400,100,"m-house",8,6);
+  s+='<rect x="160" y="200" width="34" height="24" fill="#4b3c2a"/><rect x="196" y="204" width="14" height="18" fill="#4b3c2a"/>';
+  s+='<rect x="322" y="178" width="18" height="12" fill="#efe8d7" stroke="#3b362d"/><rect x="338" y="174" width="6" height="16" fill="#efe8d7" stroke="#3b362d"/>';
+  s+='<rect x="364" y="198" width="18" height="12" fill="#efe8d7" stroke="#3b362d"/>';
+  s+='<text class="m-title" x="20" y="30">LIDICE · SCHEMATIC</text>';
+  return s;},
+ svgNow:function(){
+  var s='<rect class="m-meadow" width="600" height="380"/>';
+  s+='<path class="m-stream" d="M0,232 C120,222 200,250 300,240 S480,212 600,226"/>';
+  s+='<path d="M120,160 C250,150 420,150 520,170 L520,260 C400,276 240,276 120,262 Z" fill="#d3ddc0" opacity=".7"/>';
+  s+='<rect class="m-found" x="160" y="200" width="34" height="24"/><rect class="m-found" x="322" y="178" width="22" height="12"/><rect class="m-found" x="364" y="198" width="18" height="12"/>';
+  s+='<path d="M170,184 v18 M163,190 h14" stroke="#3b362d" stroke-width="2"/>';
+  var kids="";var r=rng(82);for(var i=0;i<82;i++){var a=i%14,b=Math.floor(i/14);kids+='<circle cx="'+(262+a*6+r()*2).toFixed(1)+'" cy="'+(300+b*6+r()*2).toFixed(1)+'" r="1.6" fill="#5b5245"/>';}
+  s+=kids+'<text class="m-label-s" x="252" y="350">children’s memorial (on the slope)</text>';
+  s+='<rect x="280" y="74" width="44" height="22" fill="#cfc7b5" stroke="#8a816e"/><text class="m-label-s" x="270" y="68">Museum (1962)</text>';
+  var rose="";for(var x=0;x<8;x++){for(var y=0;y<5;y++){rose+='<circle cx="'+(380+x*8)+'" cy="'+(90+y*8)+'" r="2.2" fill="#c98a95"/>';}}
+  s+=rose+'<text class="m-label-s" x="376" y="140">Rose garden</text>';
+  var lind="";for(var j=0;j<10;j++){lind+='<circle cx="'+(460+j*14)+'" cy="'+(118-j*9)+'" r="3" fill="#7d9a68"/>';}
+  s+='<path d="M456,124 L594,32" stroke="#efe8d7" stroke-width="3"/>'+lind+'<text class="m-label-s" x="470" y="140">Linden avenue</text>';
+  s+='<rect class="m-city" x="500" y="0" width="100" height="70"/>'+grid(500,0,600,70,25,23,"m-cityblock")+'<text class="m-label" x="512" y="84">New Lidice</text>';
+  s+='<path class="m-road-edge" d="M0,202 C60,198 100,196 120,195"/><path class="m-road" d="M0,202 C60,198 100,196 120,195"/>';
+  return s;},
+ pins:[
+  {x:178,y:212,l:"then",t:"Horák farm",d:"Where 173 men were shot on 10 June 1942, first in groups of five and then ten.",r:[1,2]},
+  {x:334,y:182,l:"then",t:"Church of St Martin",d:"Burned with the village; its foundations survive.",r:[15]},
+  {x:373,y:204,l:"then",t:"School",d:"Women and children were first held at the village school before transfer to Kladno.",r:[2,15]},
+  {x:170,y:192,l:"now",t:"Mass grave and cross",d:"The common grave of the men of Lidice, beside the Horák farm foundations.",r:[14,12]},
+  {x:343,y:194,l:"now",t:"Foundations of church and school",d:"Among the few built traces left on the site.",r:[15]},
+  {x:300,y:312,l:"now",t:"Memorial to the Children Victims of the War",d:"82 bronze figures by Marie Uchytilová, completed in 2000; a restoration campaign began in 2024.",r:[1,8]},
+  {x:302,y:85,l:"now",t:"Museum",d:"Opened 1962 just north of the old village.",r:[1,7]},
+  {x:404,y:106,l:"now",t:"Rose garden",d:"Founded through Barnett Stross’s “Lidice Shall Live” movement in the 1950s, between old and new Lidice.",r:[3]},
+  {x:540,y:40,l:"now",t:"New Lidice",d:"Built from 1947 for returning survivors.",r:[1]}
+ ]},
+sources:[
+ ["Lidice Memorial (via Memorial Museums portal)","https://www.memorialmuseums.org/eng/staettens/view/398/Lidice-Memorial"],
+ ["Wikipedia — Lidice massacre","https://en.wikipedia.org/wiki/Lidice_massacre","secondary"],
+ ["Embassy of the Czech Republic in London — The Embassy commemorated the Lidice massacre","https://mzv.gov.cz/london/en/what_s_new/the_embassy_commemorated_the_lidice.html"],
+ ["RAF Museum — Lidice tragedy (Czechoslovak squadrons in the RAF)","https://www.rafmuseum.org.uk/research/online-exhibitions/czechoslovak-squadrons-in-raf/lidice-tragedy/"],
+ ["Holocaust Historical Society — Lidice","https://www.holocausthistoricalsociety.org.uk/contents/naziseasternempire/lidice.html"],
+ ["HISTORY.com — In brutal reprisal, Nazis annihilate Czech village of Lidice","https://www.history.com/this-day-in-history/lidice-massacre-nazis-czechoslovakia"],
+ ["Museum of Jewish Heritage — Lidice","https://mjhnyc.org/?p=9388"],
+ ["Radio Prague International — Sculpture of Lidice children to undergo restoration","https://english.radio.cz/sculpture-lidice-children-undergo-restoration-8872124"],
+ ["History Learning Site — Lidice","https://www.historylearningsite.co.uk/?p=4401","secondary"],
+ ["Centropa — Lidice","https://www.centropa.org/cs/grtscott/lidice","secondary"],
+ ["The War Illustrated (1946), via TracesOfWar — The Truth About Lidice","https://tracesofwar.nl/thewarillustrated/242/the-truth-about-lidice.asp"],
+ ["Lidice Memorial director, address at Kalavryta (DMKO)","https://mail.dmko.gr/en/node/274"],
+ ["Military History wiki (Wikipedia mirror) — Lidice","https://military-history.fandom.com/wiki/Lidice","secondary"],
+ ["Radio Prague International — Public collection to preserve Lidice children sculpture","https://english.radio.cz/node/8835028"],
+ ["Zeina Elcheikh, Visual History — Remembering 10 June (2020)","https://zeitgeschichte-digital.de/doks/files/1776/visual_history_elcheikh_remembering_10_june_en_2020.pdf"],
+ ["Zachor Foundation — Germans obliterate Czech village","https://www.zachorfoundation.org/?p=841","secondary"]
+]},
+
+/* ===================== 4. DISTRICT SIX ===================== */
+{id:"district6",no:"04",name:"District Six",place:"Cape Town, South Africa",span:"1966–1982",cat:"Erased by state or war",
+finding:"District Six was the inner-city ward where Cape Town’s working people of many origins lived within sight of the harbour. In 1966 the apartheid government declared it a white group area; over the following 15 years more than 60,000 people were moved to the Cape Flats and almost everything except places of worship was bulldozed. Opponents then treated the cleared land as tainted, and much of it stayed empty. Sixty years after the proclamation, restitution had rehoused 247 households.",
+stakes:"At proclamation, white owners held most property, much of it rented out; the people removed were largely tenants. Restitution after 1994 has had to reconstruct rights that the original ownership records never captured, and delivery has lagged decades behind promises.",
+stakesR:[3,15],
+facts:[
+ {k:"Declared a white group area",v:"11 February 1966",r:[1,2]},
+ {k:"People removed by 1982",v:"More than 60,000",r:[1,3]},
+ {k:"Distance to Cape Flats townships",v:"About 25 km",r:[3]},
+ {k:"Properties at proclamation",v:"3,695",n:"56% white-owned, 26% coloured, 18% Indian",r:[3,2]},
+ {k:"Restitution claims by 1998 deadline",v:"2,760",r:[8]},
+ {k:"Homes delivered to claimants",v:"247",n:"24 (2008), 115 (2013), 108 (2022)",r:[8]}
+],
+people:[
+ "The area took its name as the Sixth Municipal District of Cape Town in 1867. It grew as a mixed community of freed slaves, merchants, artisans, labourers and immigrants with close links to the city and port.<R13> Black African residents were the first to be forced out, in 1901.<R13>",
+ "By the 1960s it was a crowded, predominantly coloured community of about 55,000.<R1> Accounts describe tenements and Victorian terraces, tailors and spice shops, churches, mosques and, by one count, nine synagogues.<R4> Many households rented from landlords who were mostly white and did not live in the district.<R15>"
+],
+decisions:[
+ {who:"Parliament (National Party government)",when:"1950",act:"Passed the Group Areas Act, the legal basis for racial zoning of residence.",r:[1]},
+ {who:"Minister of Community Development",when:"Oct 1964 – Jun 1965",act:"Set up a departmental committee on replanning; announced a 10-year scheme under the Committee for the Rehabilitation of Depressed Areas.",r:[3]},
+ {who:"P. W. Botha, Minister of Community Development",when:"11 Feb 1966",act:"Declared District Six a white area and described it as “a blot which the government has cleaned up”.",r:[2,4]},
+ {who:"Department of Community Development",when:"1968–1982",act:"Removed residents from 1968; demolitions continued through the 1970s.",r:[3,1]},
+ {who:"Minister of Planning",when:"24 May 1975",act:"Declared parts of the area, including Walmer Estate and Trafalgar Park, coloured.",r:[3]},
+ {who:"City of Cape Town",when:"1979",act:"Permitted the whites-only Cape Technikon to build its campus on cleared land.",r:[6]},
+ {who:"Land Claims Court",when:"Nov 2018",act:"Ordered the state to produce a plan to house the remaining 954 restitution beneficiaries.",r:[8,9]}
+],
+timeline:[
+ {y:"1867",d:"Named the Sixth Municipal District of Cape Town.",v:"doc",r:[1]},
+ {y:"1901",d:"Black African residents forcibly removed.",v:"doc",r:[13]},
+ {y:"1940s",d:"The municipality drafts slum-clearance plans.",v:"dec",r:[1]},
+ {y:"1950",d:"Group Areas Act passed.",v:"doc",r:[1]},
+ {y:"1964–65",d:"Ministerial committee and 10-year replanning scheme announced.",v:"doc",r:[3]},
+ {y:"11 Feb 1966",d:"District Six declared a white group area.",v:"doc",r:[2]},
+ {y:"1968",d:"Removals begin.",v:"doc",r:[3]},
+ {y:"1970",d:"Area renamed Zonnebloem, after an 18th-century colonial farm.",v:"doc",r:[3]},
+ {y:"1975",d:"Parts of the area re-declared coloured.",v:"doc",r:[3]},
+ {y:"1979",d:"Cape Technikon permitted to build; St Mark’s Church refuses deconsecration; Friends of District Six formed.",v:"doc",r:[6,2]},
+ {y:"1982",d:"More than 60,000 people have been moved; almost all buildings except places of worship are gone.",v:"doc",r:[1,3]},
+ {y:"Dec 1994",d:"District Six Museum founded.",v:"doc",r:[13]},
+ {y:"1998",d:"Restitution claims deadline: 2,760 lodged.",v:"doc",r:[8]},
+ {y:"11 Feb 2004",d:"First returnees receive house keys. The Mail & Guardian says Nelson Mandela handed them over; the New Statesman says Thabo Mbeki.",v:"disp",r:[4,5]},
+ {y:"2008–22",d:"Three housing phases deliver 247 homes.",v:"doc",r:[8]},
+ {y:"Nov 2018",d:"Land Claims Court orders a plan for 954 more homes.",v:"doc",r:[9]},
+ {y:"Feb 2026",d:"Sixtieth anniversary. Cape Town’s mayor says the next housing phase is ready to go to construction tender.",v:"doc",r:[11,12]}
+],
+evidence:[
+ {t:"Record",h:"Proclamation and ministerial statement, 11 February 1966",held:"Government Gazette; contemporary press",shows:"The legal act that made residence by non-whites unlawful, and Botha’s framing of the area.",lim:"States intent, not outcome.",v:"doc",r:[2]},
+ {t:"Record",h:"Property ownership at proclamation",held:"Cited in municipal and scholarly analyses",shows:"3,695 properties: 56% white-owned, 26% coloured-owned, 18% Indian-owned.",lim:"Ownership is not residence; tenants are invisible in this count.",v:"doc",r:[3,2]},
+ {t:"Record",h:"1980 contemporaneous analysis",held:"SA History Online archive",shows:"About 30,000 people lived in the specific area proclaimed in 1966.",lim:"Narrower boundary than the standard 60,000 figure.",v:"disp",r:[14]},
+ {t:"Photograph",h:"Cloete Breytenbach, 1970s",held:"Published as The Spirit of District Six",shows:"Streets and residents photographed before and during demolition.",lim:"Selected for a book; a photographer’s view.",v:"doc",r:[15]},
+ {t:"Testimony",h:"Centre for Popular Memory interviews, 1985–2002",held:"UCT Libraries Digital Collections",shows:"Oral histories from people who lived or worked in the district before removal.",lim:"Recorded long after the events.",v:"doc",r:[7]},
+ {t:"Physical trace",h:"Spared places of worship",held:"In situ",shows:"St Mark’s Anglican Church, around which the Technikon had to build; the Zeenatul Islamic Mosque on the eastern side.",lim:"Survivals reflect what the state chose not to demolish.",v:"doc",r:[6,12]},
+ {t:"Physical trace",h:"Street signs",held:"Kept as memorial objects",shows:"Rusted signs from demolished streets, displayed as a reminder of the erased street pattern.",lim:"Objects, not a full plan.",v:"doc",r:[5]},
+ {t:"Record",h:"Court order and parliamentary replies, 2018–2026",held:"Land Claims Court; Parliamentary Monitoring Group",shows:"2,526 claims settled, 1,252 by cash; a plan for 954 homes needing about R2.2 billion.",lim:"Government’s own accounting.",v:"doc",r:[9,10,16]}
+],
+claims:[
+ {c:"District Six was a slum that had to be cleared.",v:"dec",w:"Neglect by absentee landlords and the city did produce overcrowding, and slum-clearance plans existed in the 1940s. Extensive demolition began only after the racial proclamation.",r:[1,15]},
+ {c:"More than 60,000 people were removed.",v:"disp",w:"The standard figure for the wider district through 1982. A 1980 analysis put the population of the specific proclaimed area at about 30,000. Totals depend on boundaries and years.",r:[1,3,14]},
+ {c:"The land was cleared for white housing.",v:"doc",w:"That was the declared purpose. In practice little white housing was built; the Technikon, a convention centre and a police barracks took parts of the land.",r:[2,4]},
+ {c:"District Six was a harmonious multiracial idyll.",v:"lore",w:"Journalists note that a romantic myth has grown around the district. Its diversity was real; so were poverty and crowding, which memory sometimes smooths over.",r:[5,1]},
+ {c:"Restitution is largely complete.",v:"disp",w:"The state counts 2,526 claims settled, many by cash. Of 1,165 claimants who chose to return, 247 had homes by late 2025.",r:[9,8]}
+],
+remains:[
+ {w:"Places of worship",s:"Churches and mosques left standing amid demolition.",r:[3,6]},
+ {w:"Cape Peninsula University of Technology",s:"Former Cape Technikon, occupying over half of the area renamed Zonnebloem.",r:[3]},
+ {w:"District Six Museum",s:"Founded December 1994; marked 30 years in 2024.",r:[13,11]},
+ {w:"Restitution housing",s:"247 homes delivered; the court-ordered plan provides for 954 more.",r:[8,9]},
+ {w:"Vacant land",s:"Large tracts never redeveloped; the city has sought court interdicts to keep restitution land clear.",r:[2,12]}
+],
+map:{then:"c.1965",now:"2026",conf:"Low–medium",
+ note:"Schematic of the district between the Castle and the slopes of Devil’s Peak. Hanover Street and Chapel Street are named in sources; block pattern is illustrative. Positions of campus, housing phases and buildings are approximate.",
+ svgThen:function(){
+  var s='<rect class="m-land" width="600" height="380"/>';
+  s+='<rect class="m-water" x="0" y="0" width="600" height="46"/><text class="m-label-i" x="250" y="30">Table Bay</text>';
+  s+='<path d="M380,380 C450,300 520,262 600,242 V380 Z" fill="#d9cfb4"/><text class="m-label-s" x="500" y="350">Devil’s Peak slopes</text>';
+  s+='<rect class="m-city" x="0" y="50" width="150" height="330"/>'+grid(0,50,150,380,30,28,"m-cityblock")+'<text class="m-label" x="30" y="370">City centre</text>';
+  s+='<path d="M170,92 l14,8 l-4,16 h-20 l-4,-16 z" fill="#a69a80" stroke="#6b6455"/>';
+  s+='<path class="m-road-edge" d="M150,140 L600,120"/><path class="m-road" d="M150,140 L600,120"/><text class="m-label-s" x="440" y="116">Sir Lowry Road</text>';
+  s+=scatter(66,190,190,148,370,190,"m-house2",11,8);
+  s+='<path class="m-road-edge" d="M190,212 C300,206 420,200 560,190"/><path class="m-road" d="M190,212 C300,206 420,200 560,190" style="stroke-width:6"/><text class="m-label" x="300" y="200">Hanover Street</text>';
+  s+='<text class="m-title" x="200" y="66">DISTRICT SIX · BLOCKS ILLUSTRATIVE</text>';
+  return s;},
+ svgNow:function(){
+  var s='<rect class="m-land" width="600" height="380"/>';
+  s+='<rect class="m-water" x="0" y="0" width="600" height="46"/><text class="m-label-i" x="250" y="30">Table Bay</text>';
+  s+='<path d="M380,380 C450,300 520,262 600,242 V380 Z" fill="#d9cfb4"/>';
+  s+='<rect class="m-city" x="0" y="50" width="150" height="330"/>'+grid(0,50,150,380,30,28,"m-cityblock");
+  s+='<path d="M170,92 l14,8 l-4,16 h-20 l-4,-16 z" fill="#a69a80" stroke="#6b6455"/>';
+  s+='<path class="m-road-edge" d="M150,140 L600,120"/><path class="m-road" d="M150,140 L600,120"/>';
+  s+='<rect class="m-vacant" x="190" y="146" width="380" height="196"/>';
+  s+='<path class="m-campus" d="M262,160 L452,154 L456,300 L270,306 Z"/><text class="m-label" x="290" y="228">CPUT campus</text><text class="m-label-s" x="290" y="241">(former Cape Technikon, from 1979)</text>';
+  s+='<circle cx="226" cy="168" r="14" fill="#c4bba8" stroke="#8d8471"/>';
+  s+='<rect x="210" y="300" width="40" height="22" fill="#b3ab9b"/>';
+  s+=grid(470,170,530,200,10,10,"m-new")+grid(490,250,540,280,10,10,"m-new")+grid(460,300,500,330,10,10,"m-new");
+  s+='<path class="m-road-edge" d="M462,236 L600,228"/><path class="m-road" d="M462,236 L600,228"/><text class="m-label-s" x="540" y="222">Chapel St</text>';
+  s+='<text class="m-label-s" x="470" y="164">Restitution housing</text>';
+  return s;},
+ pins:[
+  {x:330,y:206,l:"then",t:"Hanover Street",d:"The district’s main thoroughfare; it disappeared with the clearance.",r:[3]},
+  {x:172,y:104,l:"both",t:"Castle of Good Hope",d:"The colonial fort; District Six lay to its south and east.",r:[1]},
+  {x:440,y:256,l:"both",t:"St Mark’s Church",d:"Its congregation refused deconsecration, so the Technikon was built around it.",r:[6]},
+  {x:520,y:226,l:"both",t:"Zeenatul Islamic Mosque",d:"On the eastern side; Chapel Street links Trafalgar Park beyond it to the restitution areas.",r:[12]},
+  {x:546,y:300,l:"then",t:"Walmer Estate",d:"Re-declared coloured in 1975; some houses here escaped demolition.",r:[3]},
+  {x:196,y:176,l:"both",t:"Buitenkant Street",d:"Site of the Methodist church, founded for descendants of slaves, that served District Six families.",r:[4]},
+  {x:226,y:168,l:"now",t:"Good Hope Centre",d:"A convention hall built on cleared land.",r:[4]},
+  {x:230,y:311,l:"now",t:"Police barracks",d:"Among the few official buildings erected on the site. Position approximate.",r:[4]},
+  {x:500,y:186,l:"now",t:"Restitution housing phases",d:"247 homes delivered in three phases (2008, 2013, 2022). Positions schematic.",r:[8]},
+  {x:350,y:322,l:"now",t:"Vacant land",d:"Large areas left undeveloped because the land was seen as tainted, and later reserved for restitution.",r:[2,12]}
+ ]},
+sources:[
+ ["SA History Online — District Six, Cape Town","https://sahistory.org.za/place/district-six-cape-town"],
+ ["SA History Online — District Six declared white area","https://sahistory.org.za/article/district-six-declared-white-area"],
+ ["Wikipedia — District Six","https://en.wikipedia.org/wiki/District_Six","secondary"],
+ ["Mail & Guardian — Return to District Six (16 Feb 2004)","https://mg.co.za/news/south-africa/2004-02-16-return-to-district-six/"],
+ ["New Statesman — Cry land, cry freedom (Feb 2004)","https://www.newstatesman.com/long-reads/2004/02/cry-land-cry-freedom"],
+ ["GroundUp via SA History Online — District Six: 3,000 ex-residents on land claims waiting list (2016)","https://sahistory.org.za/archive/district-six-3000-ex-residents-land-claims-waiting-list-diana-mellow-groundup-23-september"],
+ ["UCT News — Remembering District Six (2016)","https://news.uct.ac.za/article/-2016-02-11-remembering-district-six"],
+ ["GroundUp via allAfrica — District Six claimants wonder if they will be alive (Oct 2025)","https://allafrica.com/stories/202510280105.html"],
+ ["Parliamentary Monitoring Group — Question NW5773 reply (Dec 2025)","https://pmg.org.za/committee-question/35192/"],
+ ["Parliament of South Africa — Committee urges department to address District Six (Mar 2025)","https://www.parliament.gov.za/news/land-reform-committee-strongly-urges-department-address-terrible-injustice-district-six"],
+ ["GroundUp — 60 years since District Six declared whites-only area (Feb 2026)","https://groundup.news/article-print/60-years-since-district-six-forced-removals/"],
+ ["City of Cape Town — Mayor and Land Reform Minister receive District Six project update (Feb 2026)","https://www.capetown.gov.za/Media-and-news/Mayor%20and%20Land%20Reform%20Minister%20receive%20District%20Six%20project%20update"],
+ ["District Six Museum — About (ticketing page text)","https://www.quicket.co.za/events/138798-general-admission-tickets/"],
+ ["SA History Online archive — 1980 analysis of District Six depopulation (PDF)","https://sahistory.org.za/sites/default/files/archive-files/BSFeb80.0036.4843.021.004.Feb1980.12.pdf"],
+ ["Publisher listing — The Spirit of District Six (Breytenbach photographs)","https://buscalibre.cl/libro-the-spirit-of-district-six/9781485303060/p/49262666","secondary"],
+ ["Parliamentary Monitoring Group — Question NW4933 reply (Oct 2025)","https://pmg.org.za/committee-question/33055/"]
+]},
+
+/* ===================== 5. KOWLOON WALLED CITY ===================== */
+{id:"kowloon",no:"05",name:"Kowloon Walled City",place:"Kowloon City, Hong Kong",span:"1847–1994",cat:"Erased by state or war",
+finding:"Kowloon Walled City began as a Qing fort, lost its walls during the Japanese occupation, and became an enclave that neither Britain nor China would govern outright. Unregulated towers rose across its 2.6 hectares until about 33,000 people lived there. In 1987 the Hong Kong and Chinese governments jointly announced its demolition; residents and businesses were paid HK$2.7 billion and the city came down in 1993–94. It is the casebook’s counter-example: a negotiated, compensated erasure that preserved selected relics, surrounded by a popular memory far more lurid than the record.",
+stakes:"The Walled City existed because of a sovereignty dispute. Its density, its informal economy and eventually its demolition all followed from two governments’ decisions about who would and would not exercise authority there.",
+stakesR:[2,7],
+facts:[
+ {k:"Walled fort built",v:"Nov 1846 – May 1847",r:[1]},
+ {k:"Area",v:"2.6 hectares",r:[2]},
+ {k:"Population, 1987 survey",v:"About 33,000",r:[2]},
+ {k:"Compensation",v:"HK$2.7 billion",n:"About US$350m",r:[2]},
+ {k:"Demolition",v:"23 Mar 1993 – Apr 1994",r:[2]},
+ {k:"Park opened",v:"December 1995",r:[2]}
+],
+people:[
+ "After 1945, refugees from the Chinese Civil War poured into Hong Kong; 2,000 squatters occupied the site by 1947.<R2> Over the following decades, buildings of 12 to 14 storeys went up without architects or engineering oversight.<R12,2>",
+ "The city held homes, schools, small factories, food processors and unlicensed doctors and dentists, who could practise there without prosecution.<R11,12> The government supplied only minimal services such as water and mail.<R11> A University of Hong Kong study drawing on residents’ oral testimony found strong community ties, affordable housing and a better quality of life than international coverage suggested.<R9,13>"
+],
+decisions:[
+ {who:"Qing authorities",when:"1846–47",act:"Built a walled garrison to reinforce Chinese authority after the cession of Hong Kong Island.",r:[1,2]},
+ {who:"British government",when:"1898–99",act:"The 1898 Convention leasing the New Territories excluded the fort; in 1899 British troops expelled the Qing officials and soldiers.",r:[1,4]},
+ {who:"Japanese occupation forces",when:"1941–45",act:"Tore down the walls and used the stone to extend Kai Tak airfield.",r:[1]},
+ {who:"Hong Kong government",when:"Jan 1948",act:"Evicted squatters; police were met with stones, and protests in Canton broke into the British consulate. The government then largely stayed out of the enclave.",r:[5,6,2]},
+ {who:"Royal Hong Kong Police",when:"1973–74",act:"More than 3,500 raids against triad operations, with over 2,500 arrests.",r:[2]},
+ {who:"Hong Kong and Chinese governments",when:"14 Jan 1987",act:"Jointly announced the demolition and conversion of the site to a park.",r:[2,4]}
+],
+timeline:[
+ {y:"1846–47",d:"Walled fort constructed.",v:"doc",r:[1]},
+ {y:"1898",d:"Convention leasing the New Territories excludes the fort.",v:"doc",r:[2]},
+ {y:"1899",d:"British troops expel Qing officials.",v:"doc",r:[1]},
+ {y:"1941–45",d:"Walls demolished for the Kai Tak extension.",v:"doc",r:[1]},
+ {y:"1947",d:"About 2,000 squatters on the site.",v:"doc",r:[2]},
+ {y:"Jan 1948",d:"Nationalist China formally asserts jurisdiction (8 Jan); eviction on 5 Jan and clashes on 12 Jan; demonstrators storm the British consulate in Canton (16 Jan).",v:"disp",r:[2,5,6]},
+ {y:"1963",d:"Another clearance attempt is rebuffed, with formal Chinese disapproval.",v:"doc",r:[7]},
+ {y:"1969",d:"A government report says police work there matches work elsewhere, except that licensing laws go unenforced.",v:"doc",r:[7]},
+ {y:"1973–74",d:"Mass police raids.",v:"doc",r:[2]},
+ {y:"1984",d:"Sino-British Joint Declaration.",v:"doc",r:[2]},
+ {y:"14 Jan 1987",d:"Demolition announced; a government survey counts about 33,000 residents.",v:"doc",r:[2]},
+ {y:"1992",d:"Eviction and compensation completed.",v:"doc",r:[2]},
+ {y:"1993–94",d:"Demolition; carved granite plaques from the South Gate are unearthed.",v:"doc",r:[1,2]},
+ {y:"Dec 1995",d:"Kowloon Walled City Park opens.",v:"doc",r:[2]}
+],
+evidence:[
+ {t:"Census",h:"Government survey, 1987",held:"Hong Kong government",shows:"About 33,000 residents, roughly 1.2 million per square kilometre.",lim:"Earlier official counts (10,004 in 1971; 14,617 in 1981) were widely considered far too low, so the series is unreliable.",v:"doc",r:[2,10]},
+ {t:"Record",h:"British note on the eviction of squatters, January 1948",held:"UK National Archives, CO 537/3706",shows:"About 65 earlier occupants were rehoused in 1935–37; eviction of hut dwellers on 5 January 1948; police later met by stone-throwing.",lim:"The British government’s own account in a sovereignty dispute.",v:"doc",r:[5]},
+ {t:"Record",h:"US consular telegram from Canton, 16 January 1948",held:"Foreign Relations of the United States, 1948, vol. VII",shows:"Thousands of demonstrators protesting the eviction broke into the British consulate.",lim:"Based on reports from local employees.",v:"doc",r:[6]},
+ {t:"Record",h:"Hong Kong government report, 1969",held:"Quoted in City of Darkness Revisited",shows:"Police activity was “the same as everywhere else”; building supervision was withheld to avoid implying approval of illegal structures.",lim:"Quoted extract.",v:"doc",r:[7]},
+ {t:"Photograph",h:"Greg Girard and Ian Lambot, 1986–1992",held:"Published in City of Darkness (1993) and City of Darkness Revisited",shows:"Four years of photographs of residents, factories, rooftops and alleys as the city awaited demolition.",lim:"Two outsiders’ selection.",v:"doc",r:[12]},
+ {t:"Physical trace",h:"Relics excavated in 1994",held:"Kowloon Walled City Park",shows:"Two granite plaques from the South Gate, wall and gate foundations, a flagstone path, three cannons, lintels and column bases.",lim:"Preserved selectively as park features.",v:"doc",r:[1,3]},
+ {t:"Testimony",h:"Residents’ oral histories",held:"Analysed in a University of Hong Kong study",shows:"Accounts of daily life that contradict the image of total anarchy.",lim:"Collected retrospectively.",v:"doc",r:[9]}
+],
+claims:[
+ {c:"Police never entered the Walled City.",v:"lore",w:"Contradicted by the 1969 government report, the 1973–74 raids and patrol officers’ accounts. The myth persists, as its documentarians note.",r:[7,8,2]},
+ {c:"50,000 or more people lived there.",v:"disp",w:"The 1987 survey found about 33,000. Higher figures circulate informally; lower official counts from 1971 and 1981 are discounted.",r:[2,10]},
+ {c:"It was entirely ungoverned.",v:"disp",w:"Jurisdiction was contested, but the government supplied water and mail, police operated there, and building and licensing codes went unenforced as a matter of policy.",r:[11,7,9]},
+ {c:"It decayed because no one cared.",v:"dec",w:"After 1948 the government chose a hands-off approach, partly to avoid a sovereignty confrontation. Unregulated building followed from that choice.",r:[7,2]},
+ {c:"Demolition left nothing behind.",v:"lore",w:"The Qing yamen survives, and excavation recovered gate foundations, plaques and cannons that the park now displays.",r:[1,3]}
+],
+remains:[
+ {w:"The yamen",s:"The only remaining Qing building, restored at the park’s centre with an exhibition.",r:[3,1]},
+ {w:"Old South Gate",s:"A declared monument; its two granite plaques were unearthed in 1994.",r:[3,1]},
+ {w:"Wall foundations and flagstone path",s:"Incorporated into the park design.",r:[1]},
+ {w:"Bronze model",s:"A miniature of the Walled City near the South Gate.",r:[3]}
+],
+map:{then:"1987",now:"2026",conf:"Medium",
+ note:"Footprint generalised from published plans and park guides. The building mosaic is generated to convey density; it does not represent individual structures. Line of 1847 walls approximate.",
+ svgThen:function(){
+  var s='<rect class="m-city" width="600" height="380"/>'+grid(0,0,600,380,40,34,"m-cityblock");
+  s+='<path class="m-road-edge" d="M0,104 H600"/><path class="m-road" d="M0,104 H600"/><text class="m-label-s" x="10" y="98">Tung Tau Tsuen Road</text>';
+  s+='<path class="m-road-edge" d="M0,288 H440"/><path class="m-road" d="M0,288 H440"/><text class="m-label-s" x="10" y="282">Carpenter Road</text>';
+  s+='<rect x="168" y="118" width="264" height="156" fill="#4a4740"/>'+mosaic(87,170,120,430,272,9);
+  s+='<path d="M170,196 H430 M300,120 V272 M230,120 V272 M370,120 V272" stroke="#2f2d29" stroke-width="1.2"/>';
+  s+='<rect x="290" y="186" width="20" height="16" fill="#cbbf9f" stroke="#2f2d29"/>';
+  s+='<rect class="m-ghostline" x="164" y="114" width="272" height="164"/>';
+  s+='<path class="m-runway" d="M440,312 L600,262 L600,300 L452,346 Z"/><text class="m-label-s" x="488" y="342">Kai Tak Airport</text>';
+  s+='<text class="m-title" x="170" y="306">WALLED CITY FOOTPRINT · 2.6 HA</text>';
+  return s;},
+ svgNow:function(){
+  var s='<rect class="m-city" width="600" height="380"/>'+grid(0,0,600,380,40,34,"m-cityblock");
+  s+='<path class="m-road-edge" d="M0,104 H600"/><path class="m-road" d="M0,104 H600"/>';
+  s+='<path class="m-road-edge" d="M0,288 H440"/><path class="m-road" d="M0,288 H440"/>';
+  s+='<rect class="m-park" x="164" y="114" width="272" height="164"/>';
+  s+='<path class="m-path" d="M180,260 C220,220 250,250 290,210 S360,170 420,140" style="stroke-width:3"/><path class="m-path" d="M180,140 C230,170 260,150 300,190 S380,240 420,260" style="stroke-width:3"/>';
+  s+='<ellipse class="m-water" cx="220" cy="170" rx="22" ry="12"/><ellipse class="m-water" cx="388" cy="226" rx="18" ry="10"/>';
+  s+='<rect x="288" y="184" width="24" height="18" fill="#cbbf9f" stroke="#2f2d29"/>';
+  s+='<rect x="292" y="266" width="16" height="10" fill="#b4ab96" stroke="#2f2d29"/>';
+  s+='<rect class="m-ghostline" x="164" y="114" width="272" height="164"/>';
+  s+='<circle cx="250" cy="234" r="4" fill="#9b8d70"/><circle cx="356" cy="160" r="4" fill="#9b8d70"/>';
+  s+='<path d="M440,312 L600,262 L600,300 L452,346 Z" fill="#c5bfb2"/><text class="m-label-s" x="488" y="342">former Kai Tak</text>';
+  s+='<text class="m-title" x="170" y="306">KOWLOON WALLED CITY PARK</text>';
+  return s;},
+ pins:[
+  {x:300,y:194,l:"then",t:"Yamen, engulfed",d:"The garrison’s administrative building survived inside the high-rise mass.",r:[3]},
+  {x:300,y:274,l:"then",t:"South Gate site",d:"The fort’s main entrance; its carved plaques were found here during demolition.",r:[1]},
+  {x:166,y:116,l:"then",t:"Line of the 1847 walls",d:"Demolished during the Japanese occupation; the stone went into Kai Tak.",r:[1]},
+  {x:520,y:300,l:"then",t:"Kai Tak Airport",d:"Its extension consumed the walls; its flight path shaped building heights nearby.",r:[1]},
+  {x:300,y:193,l:"now",t:"Yamen (restored)",d:"The only remaining Qing building; now houses an exhibition with former residents’ recollections.",r:[3]},
+  {x:300,y:271,l:"now",t:"Old South Gate remains",d:"A declared monument with its two granite plaques.",r:[3,1]},
+  {x:330,y:262,l:"now",t:"Bronze model",d:"A miniature of the Walled City near the South Gate.",r:[3]},
+  {x:180,y:122,l:"now",t:"Wall foundations and flagstone path",d:"Unearthed in 1994 and incorporated into the park.",r:[1]}
+ ]},
+sources:[
+ ["Leisure and Cultural Services Department, Hong Kong — Kowloon Walled City Park: historical background","https://www.lcsd.gov.hk/en/parks/kwcp/historical.html"],
+ ["Wikipedia — Kowloon Walled City","https://en.wikipedia.org/wiki/Kowloon_Walled_City","secondary"],
+ ["Wikipedia — Kowloon Walled City Park","https://en.wikipedia.org/wiki/Kowloon_Walled_City_Park","secondary"],
+ ["Hong Kong Government press release — Museum of Coastal Defence introduces military relics (2008)","https://www.info.gov.hk/gia/general/200810/03/P200810030148_print.htm"],
+ ["UK National Archives CO 537/3706, transcribed by Hong Kong in Texts — Walled City of Kowloon: Eviction of Squatters (Jan 1948)","https://hkintexts.histsyn.com/page/695136"],
+ ["Foreign Relations of the United States, 1948, vol. VII (University of Wisconsin Digital Collections)","https://search.library.wisc.edu/digital/A3ZRT6AWATPVI383/text/A3B2TIYSZAIPTI8M"],
+ ["City of Darkness Revisited — Government interventions","https://cityofdarkness.co.uk/?p=791"],
+ ["City of Darkness Revisited — Urban myths","https://cityofdarkness.co.uk/category/urban_myths/"],
+ ["University of Hong Kong repository — Quality of life in a “high-rise lawless slum”","https://repository.hku.hk/bitstream/10722/259448/1/Content.pdf"],
+ ["Rare Historical Photos — Kowloon Walled City (census figures)","https://rarehistoricalphotos.com/kowloon-walled-city-photos/","secondary"],
+ ["Gwulo — Kowloon City: a brief history","https://gwulo.com/node/19851","secondary"],
+ ["Feature Shoot — Greg Girard and Ian Lambot on Kowloon Walled City","https://www.featureshoot.com/?p=142400"],
+ ["National Geographic — Inside Kowloon Walled City","https://www.nationalgeographic.com/history/article/kowloon-walled-city-history"]
+]},
+
+/* ===================== 6. OSCARVILLE / FORSYTH ===================== */
+{id:"oscarville",no:"06",name:"Oscarville and Forsyth County",place:"Forsyth County, Georgia, USA",span:"1912 · 1956",cat:"Lore contrast",
+finding:"A viral story holds that Georgia’s Lake Lanier was built to drown Oscarville, a thriving Black town. The documented history is broader and in some ways worse. In autumn 1912, after a lynching and two hasty executions, white night riders drove all 1,098 Black residents out of Forsyth County, which stayed almost entirely white for most of the century. Oscarville itself was a small, mostly white community, and the lake arrived more than 40 years later. The myth compresses a county-wide expulsion into one drowned town and shifts the blame onto a federal dam.",
+stakes:"No law expelled anyone, so no legal record of taking exists. Black-owned land passed into white hands through abandonment, distress sales and transfers that researchers are still tracing, and the lore of a drowned town now competes with that harder, documented story.",
+stakesR:[3,14],
+facts:[
+ {k:"Black residents expelled",v:"1,098",n:"1910 census; about 10% of the county",r:[7,14]},
+ {k:"Black property owners in 1912 tax returns",v:"59, holding at least 1,988 acres",r:[3]},
+ {k:"Combined Black assets, 1912",v:"$30,839",r:[3]},
+ {k:"Oscarville’s population",v:"63",n:"“overwhelmingly white”, per Patrick Phillips",r:[9]},
+ {k:"Lake Lanier filled",v:"Feb 1956 – Aug 1958",r:[11]},
+ {k:"Visitors per year",v:"About 11.8 million",n:"US Army Corps of Engineers figure",r:[12]}
+],
+people:[
+ "Before 1912, Black families farmed, sharecropped and owned land across Forsyth’s militia districts. About a quarter of Black households owned property, in line with the national average and above Georgia’s 15.3%.<R5> Newspapers of the time reported that white residents burned Black churches and posted notices telling Black residents to leave.<R19>",
+ "Oscarville was a farming community in the county’s north-east, near the Chattahoochee River. Mae Crow, the 18-year-old white woman whose death set off the expulsion, lived there; so did the Daniel family and Ernest Knox, among the few Black residents of that area.<R1,4,9>"
+],
+decisions:[
+ {who:"Night riders",when:"Sep – Oct 1912",act:"Bands of white men used threats and arson to force Black residents out. No statute or court order authorised it.",r:[19,4]},
+ {who:"Sheriff Bill Reid",when:"Sep 1912",act:"Arrested Rob Edwards, Ernest Knox and Oscar Daniel. Phillips says the mob that killed Edwards appears to have had the sheriff’s collusion.",r:[1,18]},
+ {who:"Georgia National Guard",when:"Sep – Oct 1912",act:"Deployed three times; escorted prisoners to and from trial.",r:[8,4]},
+ {who:"All-white juries",when:"Oct 1912",act:"Convicted Knox, 16, and Daniel, 18, after trials lasting one day each; both were hanged before thousands of spectators.",r:[6,8]},
+ {who:"Atlanta business groups",when:"Apr 1947",act:"The Industrial Bureau and Chamber of Commerce met to push the Buford Dam project forward.",r:[16]},
+ {who:"US Army Corps of Engineers",when:"1950–58",act:"Built Buford Dam, acquired land, cleared hazards and moved marked graves; it says some unmarked graves were likely left behind.",r:[11,15]},
+ {who:"Forsyth County Commissioners",when:"2021",act:"Unanimously approved a marker for Rob Edwards on county land.",r:[6]}
+],
+timeline:[
+ {y:"1910",d:"Census counts 1,098 Black or mixed-race residents.",v:"doc",r:[14]},
+ {y:"5 Sep 1912",d:"Ellen Grice accuses a Black man of assault; a lynching is narrowly averted.",v:"doc",r:[4,18]},
+ {y:"8–9 Sep 1912",d:"Mae Crow found beaten in woods near Oscarville; she dies later.",v:"doc",r:[4,9]},
+ {y:"10 Sep 1912",d:"Rob Edwards lynched in Cumming.",v:"doc",r:[6]},
+ {y:"Sep – Oct 1912",d:"Night riders drive out Black families; landowners abandon property or sell at a loss.",v:"doc",r:[4]},
+ {y:"3 Oct 1912",d:"Trials begin; each lasts a single day.",v:"doc",r:[4,6]},
+ {y:"13 Oct 1912",d:"The Atlanta Constitution reports Black residents fleeing Forsyth.",v:"doc",r:[4]},
+ {y:"1919",d:"Earliest transfer traced so far on the Bagley family’s 60 acres.",v:"doc",r:[14]},
+ {y:"Apr 1947",d:"Atlanta business leaders advance the dam.",v:"doc",r:[16]},
+ {y:"1 Mar 1950",d:"Buford Dam groundbreaking.",v:"doc",r:[11]},
+ {y:"1 Feb 1956",d:"Lake Lanier begins to fill; full pool on 1 August 1958.",v:"doc",r:[11]},
+ {y:"1987",d:"Civil rights marchers in Cumming are met with thrown rocks.",v:"doc",r:[7]},
+ {y:"2016",d:"Patrick Phillips publishes Blood at the Root.",v:"doc",r:[7]},
+ {y:"10 Sep 2021",d:"EJI marker for Rob Edwards dedicated by his descendants.",v:"doc",r:[6]},
+ {y:"2024",d:"Atlanta History Center and WABE podcast addresses the Oscarville myth.",v:"doc",r:[10]}
+],
+evidence:[
+ {t:"Census",h:"US census, 1910",held:"National Archives",shows:"1,098 Black or mixed-race residents in Forsyth County.",lim:"Two years before the expulsion; household-level tracing requires later records.",v:"doc",r:[14]},
+ {t:"Record",h:"Forsyth County property tax returns, 1912",held:"Mapped by the Atlanta History Center (“Mapping 1912”)",shows:"59 Black residents owning at least 1,988 acres; approximate locations plotted with Aero Atlas map books, and sales traced through Elliot Jaspin’s Buried in the Bitter Waters.",lim:"Not every owner’s land lot is recorded; locations are approximate.",v:"doc",r:[3]},
+ {t:"Press",h:"Atlanta Constitution, 4 and 13 October 1912",held:"Newspaper archives",shows:"A photograph of the prisoners Jane Daniel, Oscar Daniel, Toney Howell, Ed Collins, Isaiah Pirkle and Ernest Knox; a later headline on the flight of Black residents.",lim:"Coverage shaped by the era’s racial assumptions.",v:"doc",r:[7,4]},
+ {t:"Photograph",h:"Prisoners escorted by the Georgia National Guard, 2 October 1912",held:"Kenan Research Center, Atlanta History Center, DuBose Family Visual Arts Materials VIS 198.149.001",shows:"The accused being moved to the Atlanta railway station under guard.",lim:"Single frame.",v:"doc",r:[4]},
+ {t:"Photograph",h:"Floyd Jillson photographs",held:"Kenan Research Center, Atlanta History Center",shows:"Images the History Center uses to illustrate the lake and the Oscarville record.",lim:"Mid-century press photography, not a survey.",v:"doc",r:[2]},
+ {t:"Record",h:"Deed chain for the Bagley land",held:"Forsyth County Clerk of Superior Court",shows:"11Alive traced one of the Bagleys’ two land lots through a dozen transfers back to 1919.",lim:"The original deed was not found.",v:"doc",r:[14]},
+ {t:"Physical trace",h:"Black cemeteries",held:"In situ, Forsyth County",shows:"Headstones whose dates stop before 1912.",lim:"Unmarked graves cannot be counted.",v:"doc",r:[14]},
+ {t:"Record",h:"Lake safety data",held:"Georgia DNR; US Army Corps of Engineers",shows:"About 8 to 12 drowning or boating deaths a year; an AJC analysis of DNR data found about 1.2 deaths per million visitors, against 0.64 at Lake Allatoona.",lim:"Drowning statistics were not kept for 1994–98.",v:"doc",r:[12,13]}
+],
+claims:[
+ {c:"Lake Lanier was built to drown a Black town.",v:"lore",w:"The Atlanta History Center calls this a myth. The lake came more than 40 years after the expulsion, for flood control, water supply and power.",r:[2,11]},
+ {c:"Oscarville was a thriving majority-Black town.",v:"disp",w:"The History Center and Phillips describe a small, mostly white community of 63. Some local outlets and educators still describe it as majority-Black; the archival work supports the History Center.",r:[2,9,17]},
+ {c:"Forsyth expelled its entire Black population in 1912.",v:"doc",w:"Confirmed by census, tax and press records and by the county’s own marker.",r:[7,6,14]},
+ {c:"Black-owned land passed to whites without payment.",v:"doc",w:"The general pattern is documented: most owners abandoned land, some sold at a loss. Individual outcomes vary and many records are incomplete.",r:[3,4,5]},
+ {c:"The lake is haunted, which is why so many people die there.",v:"lore",w:"It is the Corps’ most visited lake and has submerged hazards. Its per-visitor death rate is higher than Allatoona’s, which is a safety question, not a supernatural one.",r:[12,13,2]},
+ {c:"Graves remain under the water.",v:"doc",w:"The Corps says marked graves were moved but some unmarked ones were likely left behind.",r:[15]},
+ {c:"The scale of Black landholding is settled.",v:"disp",w:"The History Center’s mapping counts 59 owners with at least 1,988 acres; another History Center article counts 40 Black landowners. The difference likely reflects individuals versus households.",r:[3,5]}
+],
+remains:[
+ {w:"Oscarville on the map",s:"The place name persists, though no one lives there.",r:[10]},
+ {w:"Rob Edwards marker, Cumming",s:"Dedicated in 2021 with EJI and the Community Remembrance Project.",r:[6]},
+ {w:"Pre-1912 Black cemeteries",s:"Scattered across the county.",r:[14]},
+ {w:"Lake Sidney Lanier",s:"Federal reservoir over former farms, woods and part of Oscarville’s land.",r:[11,2]},
+ {w:"Descendant research",s:"The History Center continues to trace expelled families and their land.",r:[1,3]}
+],
+map:{then:"1912",now:"2026",conf:"Low",
+ note:"County outline and river generalised. Dots representing Black households are illustrative only and are not plotted from tax records; see the Atlanta History Center’s “Mapping 1912” for approximate parcel locations. Lake shape schematic.",
+ svgThen:function(){
+  var s='<rect class="m-land" width="600" height="380"/>';
+  s+='<path class="m-county" d="M80,60 L420,40 L515,118 L536,300 L430,360 L120,340 L60,200 Z"/>';
+  s+='<path class="m-river" d="M440,24 C480,90 520,150 530,220 C540,280 500,330 440,374"/>';
+  s+=dots(1912,64,function(r){return [110+r()*390,80+r()*250];},"m-dot",2.4);
+  s+='<rect x="224" y="194" width="12" height="12" fill="#efe8d7" stroke="#3b362d"/>';
+  s+='<text class="m-label" x="190" y="224">Cumming</text><text class="m-label-s" x="540" y="90">Hall County</text><text class="m-label-s" x="540" y="350">Gwinnett</text>';
+  s+='<text class="m-label-i" x="470" y="200" transform="rotate(80 480 200)">Chattahoochee River</text>';
+  s+='<text class="m-title" x="90" y="364">FORSYTH COUNTY · DOTS ILLUSTRATIVE</text>';
+  return s;},
+ svgNow:function(){
+  var s='<rect class="m-land" width="600" height="380"/>';
+  s+='<path class="m-county" d="M80,60 L420,40 L515,118 L536,300 L430,360 L120,340 L60,200 Z"/>';
+  s+='<path class="m-water" d="M436,24 C470,62 446,92 492,118 C466,140 524,158 516,200 C544,232 498,252 528,292 C500,320 470,334 444,376 L424,370 C452,330 462,304 478,282 C452,270 470,240 478,222 C452,204 478,168 466,150 C432,132 452,100 420,70 Z"/>';
+  s+='<path class="m-water" d="M478,222 C440,214 420,230 398,222 L400,232 C424,240 446,226 476,236 Z"/>';
+  s+='<path class="m-water" d="M466,150 C430,150 410,138 392,146 L396,154 C418,150 436,162 464,160 Z"/>';
+  s+='<path class="m-water" d="M478,282 C450,290 430,300 410,296 L412,306 C436,310 456,298 480,294 Z"/>';
+  s+='<rect x="434" y="364" width="18" height="6" fill="#55524b"/>';
+  s+='<rect x="224" y="194" width="12" height="12" fill="#efe8d7" stroke="#1f5b86" stroke-width="1.5"/>';
+  s+='<text class="m-label" x="190" y="224">Cumming</text><text class="m-label-i" x="340" y="190">Lake Sidney Lanier</text>';
+  s+='<text class="m-title" x="90" y="364">FORSYTH COUNTY · LAKE SCHEMATIC</text>';
+  return s;},
+ pins:[
+  {x:230,y:200,l:"then",t:"Cumming",d:"County seat. Rob Edwards was taken from the jail and lynched on the square on 10 September 1912.",r:[6,18]},
+  {x:476,y:122,l:"then",t:"Oscarville area",d:"Mae Crow was found in woods near here. A small, mostly white farming community of about 63 people.",r:[4,9]},
+  {x:300,y:150,l:"then",t:"Black households (illustrative)",d:"1,098 Black residents lived across the county’s militia districts; about a quarter of households owned land.",r:[14,5]},
+  {x:520,y:250,l:"then",t:"Chattahoochee River",d:"The county’s eastern boundary; its valley became the reservoir.",r:[11]},
+  {x:444,y:366,l:"now",t:"Buford Dam",d:"Ground broken in 1950; the lake began filling in 1956.",r:[11]},
+  {x:484,y:124,l:"now",t:"Oscarville (partly flooded)",d:"The History Center says the federal government acquired roughly a quarter of the town’s land; the place name is still on maps.",r:[2,10]},
+  {x:230,y:200,l:"now",t:"Rob Edwards marker",d:"Installed on county land; dedicated on 10 September 2021.",r:[6]},
+  {x:400,y:226,l:"now",t:"Lake arms over former farmland",d:"About 11.8 million visitors a year; underwater hazards include old structures and standing timber.",r:[12]}
+ ]},
+sources:[
+ ["Atlanta History Center — Forsyth 1912","https://www.atlantahistorycenter.com/learning-research/projects-initiatives/originals/forsyth-1912/"],
+ ["Atlanta History Center, The UnderCurrent — Forsyth 1912: The Truth About Lake Lanier and Oscarville","https://medium.com/theundercurrent/forsyth-1912-the-truth-about-lake-lanier-and-oscarville-6f61ec951e11"],
+ ["Atlanta History Center — Mapping 1912","https://www.atlantahistorycenter.com/mapping-1912/"],
+ ["Atlanta History Center — Forsyth 1912: A Timeline of the Forced Exile","https://www.atlantahistorycenter.com/blog/forsyth-1912-a-timeline-of-the-forced-exile-of-black-residents-from-forsyth-county/"],
+ ["Atlanta History Center — Forsyth 1912: Examining the Displacement of the County’s Black Residents","https://atlantahistorycenter.com/?p=44469"],
+ ["Equal Justice Initiative — EJI partners with community to memorialize lynching victims in Forsyth County","https://eji.org/news/eji-partners-with-community-to-memorialize-lynching-victims-in-forsyth-county-georgia/"],
+ ["HISTORY.com — In 1912, This Georgia County Drove Out Every Black Resident","https://www.history.com/articles/georgia-racial-expulsion-stacey-abrams"],
+ ["BookBrowse — Excerpt from Blood at the Root by Patrick Phillips","https://www.bookbrowse.com/excerpts/index.cfm/book_number/3457/blood-at-the-root"],
+ ["Mic — ‘Atlanta’ hinted at the haunted history of Lake Lanier","https://www.mic.com/culture/atlanta-season-3-premiere-lake-lanier"],
+ ["Current — Podcast about Georgia’s Forsyth County explores legacy (Dec 2024)","https://current.org/2024/12/podcast-about-georgias-forsyth-county-explores-legacy-of-towns-racist-history/"],
+ ["Wikipedia — Lake Lanier","https://en.wikipedia.org/wiki/Lake_Lanier","secondary"],
+ ["13WMAZ — Lake Lanier visitor and fatality figures (USACE)","https://www.13wmaz.com/article/news/local/85-8c00d6c2-01bb-4dcc-b2cd-25d14a082fc3"],
+ ["Dayton Daily News / AJC — Just how deadly is Lake Lanier?","https://www.daytondailynews.com/news/local/just-how-deadly-lake-lanier/UvRlc6bib6ufTuQzav5XEK"],
+ ["11Alive The Reveal, via First Coast News — Forsyth County lynching memorial and the Bagley land","https://firstcoastnews.com/article/news/investigations/the-reveal/forsyth-county-lynching-memorial-to-go-up/85-e9e16326-36d5-4c3b-abfd-e76f9b0a793a"],
+ ["Listverse — 10 Reasons Lake Lanier Might Be Haunted (quoting a USACE spokesman)","https://listverse.com/2024/02/01/10-reasons-lake-lanier-might-be-haunted/","secondary"],
+ ["The Root — Georgia’s ‘Cursed’ Lake Lanier (citing the Washington Post and Atlanta History Center)","https://www.theroot.com/georgias-cursed-lake-lanier-claims-three-lives-in-one-w-1850691645"],
+ ["11Alive — Relative of Oscarville resident shares history (counter-account)","https://11alive.com/article/news/community/voices-for-equality/oscarville-lanier-lake-black-town-riot-mae-crow-chattahoochee-beulah-rucker/85-8647e2be-a07b-4e80-91cc-61613d0ff472"],
+ ["Atlanta History Center — The Events of 1912 Explained (Patrick Phillips)","https://www.atlantahistorycenter.com/blog/the-events-of-1912-explained/"],
+ ["USA Today via AOL — Why some think Georgia’s largest lake is haunted (quoting the Atlanta History Center)","https://www.aol.com/why-think-georgias-largest-lake-070038941.html"]
+]}
+];
+
+/* ---------- COMPARATIVE DATA ---------- */
+var MATRIX=[
+ ["Seneca Village","1857","NY State Legislature; city and park commissioners","Eminent domain under the 1853 act","225–264 residents (about 1,600 across the park site)","“Shantytown”, “squatters” (press)","Plaque, 2001","Market-rate awards paid at the time; no later redress"],
+ ["Africville","1964–1970","Halifax City Council","Council resolutions; expropriation","About 400 people, 80 families","“Slum” (1957 study)","National Historic Site, 1996–97; apology, 2010","$4.5m package: land, church replica, trust"],
+ ["Lidice","1942","Hitler; K. H. Frank; Horst Böhme","Reprisal order; no legal process","About 340 killed of about 500","Alleged link to Heydrich’s killers (false)","State rebuilding from 1947; memorial 1962","Village rebuilt; Frank executed after trial"],
+ ["District Six","1966–1982","P. W. Botha and the Group Areas apparatus","Group Areas Act, 1950","More than 60,000","“A blot” (Botha); slum","Restitution framework from 1994","247 homes by 2025; 954 planned"],
+ ["Kowloon Walled City","1993–1994","Hong Kong and Chinese governments","Joint agreement; government clearance","About 33,000","“Notorious nest” of vice (official histories)","Park with preserved relics, 1995","HK$2.7bn compensation"],
+ ["Forsyth County / Oscarville","1912 (expulsion); 1956 (lake)","Mob terror tolerated by local authority; USACE for the lake","None for the expulsion; federal acquisition for the lake","1,098 Black residents","Rape accusations used as pretext","County-approved marker, 2021","None"]
+];
+var ACK=[
+ {n:"Kowloon Walled City",e:1994,a:1995,al:"Park with relics",b:null},
+ {n:"Lidice",e:1942,a:1947,al:"State rebuilding begins",b:1962,bl:"Memorial"},
+ {n:"District Six",e:1982,a:1994,al:"Restitution framework",b:2004,bl:"First returns"},
+ {n:"Africville",e:1970,a:1996,al:"Historic site",b:2010,bl:"Apology"},
+ {n:"Forsyth County",e:1912,a:2021,al:"County marker",b:null},
+ {n:"Seneca Village",e:1857,a:2001,al:"First plaque",b:2019,bl:"Signage"}
+];
+
+/* ---------- RENDER ---------- */
+var current=null;
+function refs(c,arr){if(!arr||!arr.length)return"";return '<sup class="ref">['+arr.map(function(n){return '<a href="#s-'+c.id+'-'+n+'" title="'+esc(c.sources[n-1]?c.sources[n-1][0]:"")+'">'+n+'</a>';}).join(",")+']</sup>';}
+function inlineRefs(c,txt){return txt.replace(/<R([\d,]+)>/g,function(m,g){return refs(c,g.split(",").map(Number));});}
+function vcounts(c){var o={doc:0,dec:0,lore:0,disp:0};c.claims.forEach(function(x){o[x.v]++;});c.timeline.forEach(function(x){o[x.v]++;});return o;}
+var VCOL={doc:"var(--doc)",dec:"var(--dec)",lore:"var(--lore)",disp:"var(--disp)"};
+
+function renderRail(){
+ var r=document.getElementById("rail");
+ r.innerHTML=CASES.map(function(c){var k=vcounts(c),t=k.doc+k.dec+k.lore+k.disp;
+  var bar=["doc","dec","lore","disp"].map(function(v){return k[v]?'<span style="width:'+(k[v]/t*100).toFixed(1)+'%;background:'+VCOL[v]+'" title="'+V[v].l+': '+k[v]+'"></span>':"";}).join("");
+  return '<button class="tab" role="tab" id="tab-'+c.id+'" aria-controls="dossier" aria-selected="false" data-id="'+c.id+'"><span class="no">CASE '+c.no+' · '+c.span+'</span><span class="nm">'+c.name+'</span><span class="pl">'+c.place+'</span><span class="vbar" aria-hidden="true">'+bar+'</span></button>';}).join("");
+ r.addEventListener("click",function(e){var b=e.target.closest(".tab");if(b)open(b.dataset.id,true);});
+ r.addEventListener("keydown",function(e){if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;var i=CASES.findIndex(function(c){return c.id===current;});i=(i+(e.key==="ArrowRight"?1:-1)+CASES.length)%CASES.length;open(CASES[i].id,true);document.getElementById("tab-"+CASES[i].id).focus();});
+}
+
+function mapHTML(c){
+ var m=c.map,id=c.id;
+ var pins=m.pins.map(function(p,i){return '<g class="pin '+(p.l==="now"?"now":"")+'" data-i="'+i+'" data-l="'+p.l+'" tabindex="0" role="button" aria-label="'+(i+1)+': '+esc(p.t)+'"><circle cx="'+p.x+'" cy="'+p.y+'" r="8.5"/><text x="'+p.x+'" y="'+(p.y+3.3)+'">'+(i+1)+'</text></g>';}).join("");
+ var list=m.pins.map(function(p,i){return '<button data-i="'+i+'"><b>'+(i+1)+'</b>'+esc(p.t)+'<span class="lyr">'+(p.l==="both"?"then + now":p.l)+'</span></button>';}).join("");
+ return '<div class="mapcard">'+
+  '<div class="map-tools"><div class="seg" role="group" aria-label="Map view"><button data-v="100" aria-pressed="false">Then · '+m.then+'</button><button data-v="50" aria-pressed="true">Compare</button><button data-v="0" aria-pressed="false">Now · '+m.now+'</button></div>'+
+  '<label class="slider"><span>THEN</span><input type="range" min="0" max="100" value="50" aria-label="Drag to compare then and now"><span>NOW</span></label></div>'+
+  '<div class="mapstage"><span class="tag l">Then · '+m.then+'</span><span class="tag r">Now · '+m.now+'</span>'+
+  '<svg viewBox="0 0 600 380" role="img" aria-label="Schematic then-and-now map of '+esc(c.name)+'"><defs>'+
+   '<clipPath id="clip-'+id+'"><rect id="cr-'+id+'" x="300" y="0" width="300" height="380"/></clipPath>'+
+   '<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ddd3bd"/><line x1="0" y1="0" x2="0" y2="6" stroke="#a8997b" stroke-width="2"/></pattern>'+
+   '<pattern id="hatch2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="7" height="7" fill="#e9e1cc"/><line x1="0" y1="0" x2="0" y2="7" stroke="#c9bd9f" stroke-width="1.3"/></pattern>'+
+  '</defs><g class="lyr-then">'+m.svgThen()+'</g><g class="lyr-now" clip-path="url(#clip-'+id+')">'+m.svgNow()+'</g>'+
+  '<line class="divider" id="dv-'+id+'" x1="300" y1="0" x2="300" y2="380"/><circle class="divknob" id="dk-'+id+'" cx="300" cy="190" r="5"/>'+
+  '<g class="pins">'+pins+'</g></svg></div>'+
+  '<div class="map-foot"><div class="pin-info" id="pi-'+id+'"><span class="hint">Select a numbered marker or a list item. Red markers belong to the past layer, blue to the present; markers appear on whichever side of the line shows their layer.</span></div><div class="pin-list">'+list+'</div></div>'+
+  '<div class="map-note"><span class="conf">Confidence: '+m.conf+'</span><span>'+esc(m.note)+'</span></div></div>';
+}
+
+function wireMap(c){
+ var root=document.getElementById("map-"+c.id);if(!root)return;
+ var input=root.querySelector("input[type=range]"),segs=root.querySelectorAll(".seg button");
+ var cr=document.getElementById("cr-"+c.id),dv=document.getElementById("dv-"+c.id),dk=document.getElementById("dk-"+c.id);
+ var pinEls=root.querySelectorAll(".pin");
+ function set(v){var bx=600*v/100;cr.setAttribute("x",bx);cr.setAttribute("width",600-bx);dv.setAttribute("x1",bx);dv.setAttribute("x2",bx);dk.setAttribute("cx",bx);
+  var show=v>0&&v<100;dv.style.display=show?"":"none";dk.style.display=show?"":"none";
+  pinEls.forEach(function(p){var i=+p.dataset.i,pin=c.map.pins[i],vis=pin.l==="both"||(pin.l==="then"?pin.x<bx:pin.x>bx);p.style.display=vis?"":"none";});
+  segs.forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.v===+v));});
+  root.querySelector(".tag.l").style.display=v>0?"":"none";root.querySelector(".tag.r").style.display=v<100?"":"none";}
+ input.addEventListener("input",function(){set(+input.value);});
+ segs.forEach(function(b){b.addEventListener("click",function(){input.value=b.dataset.v;set(+b.dataset.v);});});
+ function pick(i){var p=c.map.pins[i];document.getElementById("pi-"+c.id).innerHTML='<span class="pn">Marker '+(i+1)+' · '+(p.l==="both"?"then and now":p.l==="then"?"then · "+c.map.then:"now · "+c.map.now)+'</span><span class="pt">'+esc(p.t)+'</span>'+esc(p.d)+refs(c,p.r);
+  pinEls.forEach(function(e){e.classList.toggle("sel",+e.dataset.i===i);});root.querySelectorAll(".pin-list button").forEach(function(b){b.classList.toggle("on",+b.dataset.i===i);});
+  var v=+input.value,bx=600*v/100;if(p.l==="then"&&p.x>=bx){input.value=100;set(100);}else if(p.l==="now"&&p.x<=bx){input.value=0;set(0);}}
+ pinEls.forEach(function(e){e.addEventListener("click",function(){pick(+e.dataset.i);});e.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(+e.dataset.i);}});});
+ root.querySelectorAll(".pin-list button").forEach(function(b){b.addEventListener("click",function(){pick(+b.dataset.i);});});
+ set(50);
+}
+
+function filterChips(kind,items,key){
+ var present=[];items.forEach(function(x){if(present.indexOf(x[key])<0)present.push(x[key]);});
+ var label=function(v){return kind==="v"?V[v].l:v;};
+ return '<div class="filters" role="group" aria-label="Filter"><button class="fchip" data-f="all" aria-pressed="true">All ('+items.length+')</button>'+present.map(function(v){var n=items.filter(function(x){return x[key]===v;}).length;return '<button class="fchip" data-f="'+v+'" aria-pressed="false">'+label(v)+' ('+n+')</button>';}).join("")+'</div>';
+}
+function wireFilter(scope,sel,attr){
+ var chips=scope.querySelectorAll(".fchip");
+ chips.forEach(function(ch){ch.addEventListener("click",function(){chips.forEach(function(x){x.setAttribute("aria-pressed","false");});ch.setAttribute("aria-pressed","true");var f=ch.dataset.f;
+  scope.querySelectorAll(sel).forEach(function(el){el.classList.toggle("hide",f!=="all"&&el.getAttribute(attr)!==f);});});});
+}
+
+function open(id,push){
+ var c=CASES.find(function(x){return x.id===id;})||CASES[0];current=c.id;
+ document.querySelectorAll(".tab").forEach(function(t){t.setAttribute("aria-selected",String(t.dataset.id===c.id));});
+ var P=c.id+"-";
+ var h='<article class="fade-in">'+
+ '<div class="case-head"><div><span class="kicker">Case '+c.no+' · '+c.span+'</span><span class="cat">'+c.cat+'</span>'+
+ '<h2>'+c.name+'</h2><div class="where">'+c.place+'</div>'+
+ '<p class="finding-label">The finding</p><p class="finding">'+c.finding+'</p>'+
+ '<div class="stakes"><b>Why recovering it matters</b>'+c.stakes+refs(c,c.stakesR)+'</div></div>'+
+ '<aside class="facts" aria-label="Case facts"><h3>Fact sheet</h3>'+c.facts.map(function(f){return '<div class="fact"><div class="k">'+f.k+'</div><div class="val">'+f.v+refs(c,f.r)+(f.n?'<small>'+f.n+'</small>':'')+'</div></div>';}).join("")+'</aside></div>'+
+ '<nav class="dnav" aria-label="Sections">'+[["map","Then vs now"],["tl","Timeline"],["ppl","Who lived there"],["dec","Who decided"],["ev","Evidence"],["cl","Claims ledger"],["rem","What remains"],["src","Sources"]].map(function(a){return '<a href="#'+P+a[0]+'">'+a[1]+'</a>';}).join("")+'</nav>'+
+
+ '<section class="blk" id="'+P+'map"><div class="blk-h"><span class="kicker">Reconstruction</span><h3>Then versus now</h3></div><p class="lede">Drag the line or use the buttons. Everything left of the line is the place as it stood; everything right of it is the site today.</p><div id="map-'+c.id+'">'+mapHTML(c)+'</div></section>'+
+
+ '<section class="blk" id="'+P+'tl"><div class="blk-h"><span class="kicker">Chronology</span><h3>Timeline</h3></div>'+filterChips("v",c.timeline,"v")+
+ '<ol class="tl">'+c.timeline.map(function(t){return '<li data-v="'+t.v+'"><div class="yr">'+t.y+'</div><div class="ev '+V[t.v].c+'">'+t.d+refs(c,t.r)+(t.v!=="doc"?' '+badge(t.v):'')+'</div></li>';}).join("")+'</ol></section>'+
+
+ '<section class="blk"><div class="two"><div id="'+P+'ppl"><div class="blk-h"><span class="kicker">Residents</span><h3>Who lived there</h3></div><div class="prose">'+c.people.map(function(p){return '<p>'+inlineRefs(c,p)+'</p>';}).join("")+'</div></div>'+
+ '<div id="'+P+'dec"><div class="blk-h"><span class="kicker">Power</span><h3>Who made the decisions</h3></div><ol class="chain">'+c.decisions.map(function(d){return '<li><span class="who">'+d.who+'</span><span class="when">'+d.when+'</span><span class="act">'+d.act+refs(c,d.r)+'</span></li>';}).join("")+'</ol></div></div></section>'+
+
+ '<section class="blk" id="'+P+'ev"><div class="blk-h"><span class="kicker">Evidence locker</span><h3>What the record holds</h3></div><p class="lede">Each card names the item, where it is held, what it establishes and where it stops. Photographs are described, not reproduced.</p>'+filterChips("t",c.evidence,"t")+
+ '<div class="egrid">'+c.evidence.map(function(e){return '<div class="ecard" data-t="'+e.t+'"><div class="etype">'+(ICON[e.t]||"")+e.t+'</div><h4>'+e.h+'</h4><div class="held">'+e.held+'</div><p class="row"><b>Establishes</b>'+e.shows+'</p><details><summary>Limits of this source</summary><p class="row" style="margin-top:6px">'+e.lim+'</p></details><div class="foot">'+badge(e.v)+refs(c,e.r)+'</div></div>';}).join("")+'</div></section>'+
+
+ '<section class="blk" id="'+P+'cl"><div class="blk-h"><span class="kicker">Verification</span><h3>Claims ledger</h3></div><p class="lede">Claims commonly made about this place, tested against the sources.</p>'+filterChips("v",c.claims,"v")+
+ '<div class="ledger">'+c.claims.map(function(x){return '<div class="claim" data-v="'+x.v+'"><div>'+badge(x.v)+'</div><div><p class="c">“'+x.c+'”</p><p class="why">'+x.w+refs(c,x.r)+'</p></div></div>';}).join("")+'</div></section>'+
+
+ '<section class="blk" id="'+P+'rem"><div class="blk-h"><span class="kicker">Surviving traces</span><h3>What remains today</h3></div><div class="remains">'+c.remains.map(function(r){return '<div class="rem"><div class="rw">'+r.w+'</div><div class="rs">'+r.s+refs(c,r.r)+'</div></div>';}).join("")+'</div></section>'+
+
+ '<section class="blk" id="'+P+'src"><div class="blk-h"><span class="kicker">Sources</span><h3>Where each claim comes from</h3></div><ol class="srcs">'+c.sources.map(function(s,i){return '<li id="s-'+c.id+'-'+(i+1)+'"><a href="'+s[1]+'" target="_blank" rel="noopener">'+esc(s[0])+'</a>'+(s[2]?'<span class="q">'+s[2]+'</span>':'')+'</li>';}).join("")+'</ol></section>'+
+ '</article>';
+ var d=document.getElementById("dossier");d.innerHTML=h;
+ wireMap(c);
+ d.querySelectorAll(".blk").forEach(function(b){if(b.querySelector(".tl"))wireFilter(b,".tl li","data-v");if(b.querySelector(".egrid"))wireFilter(b,".ecard","data-t");if(b.querySelector(".ledger"))wireFilter(b,".claim","data-v");});
+ if(push){history.replaceState(null,"","#"+c.id);var rh=document.querySelector('.rail-wrap').offsetHeight;var top=d.getBoundingClientRect().top+window.scrollY-rh-8;if(window.scrollY>top)window.scrollTo({top:top,behavior:"smooth"});}
+}
+
+function renderCompare(){
+ var el=document.getElementById("compareInner");
+ var head=["Case","Erased","Decided by","Instrument","People affected","Label applied","First formal acknowledgement","Redress"];
+ var tbl='<div class="tbl-wrap"><table class="mx"><thead><tr>'+head.map(function(h){return '<th scope="col">'+h+'</th>';}).join("")+'</tr></thead><tbody>'+MATRIX.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join("")+'</tr>';}).join("")+'</tbody></table></div>';
+ var max=175,W=760,L=170,R=20,rowH=40,H=ACK.length*rowH+46,sx=function(y){return L+(W-L-R)*y/max;};
+ var svg='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Years from erasure to first formal acknowledgement, by case">';
+ [0,25,50,75,100,125,150,175].forEach(function(t){svg+='<line class="ch-axis" x1="'+sx(t)+'" y1="10" x2="'+sx(t)+'" y2="'+(H-28)+'"/><text class="ch-sub" x="'+sx(t)+'" y="'+(H-12)+'" text-anchor="middle">'+t+'</text>';});
+ svg+='<text class="ch-sub" x="'+(W-R)+'" y="'+(H-0)+'" text-anchor="end">years after erasure</text>';
+ ACK.forEach(function(a,i){var y=16+i*rowH,g=a.a-a.e;svg+='<text class="ch-label" x="'+(L-10)+'" y="'+(y+13)+'" text-anchor="end">'+a.n+'</text><text class="ch-sub" x="'+(L-10)+'" y="'+(y+26)+'" text-anchor="end">erased '+a.e+'</text>';
+  if(a.b){svg+='<rect class="ch-bar2" x="'+sx(0)+'" y="'+(y+4)+'" width="'+(sx(a.b-a.e)-sx(0))+'" height="16" rx="2"/>';}
+  var lab=g+' yr · '+a.al+' ('+a.a+')'+(a.b?' · later: '+a.bl+' '+a.b:''),end=Math.max(g,a.b?a.b-a.e:0);
+  svg+='<rect class="ch-bar" x="'+sx(0)+'" y="'+(y+4)+'" width="'+Math.max(3,sx(g)-sx(0))+'" height="16" rx="2"/>';
+  if(end>80){svg+='<text class="ch-sub" x="'+(sx(0)+8)+'" y="'+(y+16)+'" style="fill:#fff">'+lab+'</text>';}
+  else{svg+='<text class="ch-sub" x="'+(sx(end)+6)+'" y="'+(y+16)+'">'+lab+'</text>';}});
+ svg+='</svg>';
+ el.innerHTML='<span class="kicker">Across the six files</span><h2>What the cases show together</h2><p class="lede" style="font-size:15px">A side-by-side reading of who acted, under what authority, and how long acknowledgement took. Figures and dates link back to each case’s sources.</p>'+tbl+
+ '<div class="chartcard"><span class="kicker">Time to acknowledgement</span><h3 style="margin:4px 0 8px;font-size:20px">Years from erasure to the first formal public acknowledgement</h3>'+svg+'<p class="lede" style="margin:8px 0 0">Solid bar: first formal acknowledgement by a governing or managing authority. Dashed outline: a later, weightier milestone where one exists. “Formal acknowledgement” is defined loosely across very different cases, so treat the comparison as directional.</p></div>'+
+ '<div class="patterns">'+
+ '<div class="pat"><span class="kicker">Pattern 1</span><h4>A label arrives before the bulldozer</h4><p>In all six cases a story of disorder or guilt preceded or accompanied removal: “squatters” in Manhattan, a “slum” in Halifax, “a blot” in Cape Town, a vice den in Kowloon, assassins’ helpers in Lidice, a rape accusation in Forsyth. In Halifax and Cape Town, the conditions labelled had been partly produced by the authorities that later acted on them.</p><p>Testing a label against land and service records is often the fastest way to see what a clearance was for.</p></div>'+
+ '<div class="pat"><span class="kicker">Pattern 2</span><h4>Formal title set the terms of loss</h4><p>Seneca Village owners held deeds and could contest awards in court. In Africville, 14 clear titles left most households with a flat $500. In District Six, white landlords owned most property and tenants had no standing at proclamation. In Forsyth there was no process at all, and land passed through transfers that researchers are still reconstructing.</p></div>'+
+ '<div class="pat"><span class="kicker">Pattern 3</span><h4>Acknowledgement came fastest when the regime fell</h4><p>Lidice’s rebuilding began within five years of the war’s end, and South Africa built a restitution framework soon after apartheid ended. Where the responsible institution carried on unbroken, acknowledgement took decades: 26 years to Africville’s designation and 40 to Halifax’s apology, 109 years to a marker in Forsyth County, 144 years to the first plaque at Seneca Village. Kowloon is the exception, because the clearing government designed commemoration into the clearance.</p></div>'+
+ '<div class="pat"><span class="kicker">Pattern 4</span><h4>Lore fills the silences, and moves the blame</h4><p>The drowned-town story of Oscarville shifts responsibility from a county’s residents to a federal agency. The myth of a lawless Kowloon erases the government’s deliberate hands-off policy. Lidice’s official story was itself lore, broadcast by its killers. Lore spreads where the record is thin, so the documented version has to be at least as concrete as the myth it replaces.</p></div>'+
+ '</div>';
+}
+
+/* theme */
+(function(){var b=document.getElementById("themeBtn"),root=document.documentElement;
+ var saved=null;try{saved=localStorage.getItem("dp-theme");}catch(e){}
+ if(saved)root.setAttribute("data-theme",saved);
+ b.addEventListener("click",function(){var cur=root.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");var nx=cur==="dark"?"light":"dark";root.setAttribute("data-theme",nx);try{localStorage.setItem("dp-theme",nx);}catch(e){}});
+})();
+
+renderRail();renderCompare();
+var start=(location.hash||"").replace("#","");
+open(CASES.some(function(c){return c.id===start;})?start:"seneca",false);
+window.addEventListener("hashchange",function(){var h=location.hash.replace("#","");if(CASES.some(function(c){return c.id===h;})&&h!==current)open(h,true);});
+</script>
+</body>
+</html>
